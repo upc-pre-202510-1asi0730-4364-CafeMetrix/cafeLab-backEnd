@@ -29,7 +29,8 @@
     <ItemGroup>
       <Folder Include="Profiles\Application\" />
       <Folder Include="Profiles\Infrastructure\" />
-      <Folder Include="Profiles\Interfaces\" />
+      <Folder Include="Profiles\Interfaces\ACL\" />
+      <Folder Include="Profiles\Interfaces\REST\Resources\" />
     </ItemGroup>
 
 </Project>

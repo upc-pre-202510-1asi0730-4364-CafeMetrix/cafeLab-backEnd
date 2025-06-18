@@ -1,5 +1,4 @@
 using CafeLab.API.Profiles.Domain.Model.Commands;
-using CafeLab.API.Profiles.Domain.Model.Aggregates;
 using CafeLab.API.Profiles.Domain.Model.ValueObjects;
 
 namespace CafeLab.API.Profiles.Domain.Model.Aggregates;
@@ -14,7 +13,7 @@ namespace CafeLab.API.Profiles.Domain.Model.Aggregates;
 
 public partial class Profile
 {
-    public int Id { get; }
+    public string Id { get; }
     
     public string Name { get; private set; }
     public EmailAddress Email { get; private set; }

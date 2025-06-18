@@ -14,4 +14,4 @@ namespace CafeLab.API.Profiles.Domain.Model.Commands;
 /// <param name="Plan">          Nombre del plan suscrito</param>
 /// <param name="HasPlan">       ¿Tiene plan asignado?</param>
 
-public record UpdateProfileCommand(int Id, string Name, string Email, string Role, string CafeteriaName, string Experience, string ProfilePicture, string PaymentMethod, string Plan, bool HasPlan);
+public record UpdateProfileCommand(string Id, string Name, string Email, string Role, string CafeteriaName, string Experience, string ProfilePicture, string PaymentMethod, string Plan, bool HasPlan);
