@@ -29,7 +29,6 @@
     <ItemGroup>
       <Folder Include="Profiles\Application\" />
       <Folder Include="Profiles\Interfaces\ACL\" />
-      <Folder Include="Profiles\Interfaces\REST\Transform\" />
     </ItemGroup>
 
 </Project>

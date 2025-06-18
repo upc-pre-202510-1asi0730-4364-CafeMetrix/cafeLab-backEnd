@@ -33,4 +33,4 @@ namespace CafeLab.API.Profiles.Interfaces.REST.Resources;
 /// <param name="HasPlan">
 /// Indicates if the profile has an assigned plan
 /// </param>
-public record ProfileResource(int Id, string Name, string Email, string Role, string CafeteriaName, string Experience, string ProfilePicture, string PaymentMethod, string Plan, bool HasPlan);
+public record ProfileResource(string Id, string Name, string Email, string Role, string CafeteriaName, string Experience, string ProfilePicture, string PaymentMethod, string Plan, bool HasPlan);
