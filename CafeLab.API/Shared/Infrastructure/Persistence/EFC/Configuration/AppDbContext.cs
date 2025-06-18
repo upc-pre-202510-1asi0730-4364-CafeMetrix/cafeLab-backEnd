@@ -46,15 +46,16 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         //Profile Context -> del aggregate
         builder.Entity<Profile>().HasKey(p => p.Id);
         builder.Entity<Profile>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Profile>().Property(p => p.Name).IsRequired().HasMaxLength(40);
         builder.Entity<Profile>().Property(p => p.Email).IsRequired().HasMaxLength(40);
-        builder.Entity<Profile>().Property(p => p.Password).IsRequired();
-        builder.Entity<Profile>().Property(p => p.Role).IsRequired();
-        builder.Entity<Profile>().Property(p => p.CafeteriaName).IsRequired();
-        builder.Entity<Profile>().Property(p => p.Experience).IsRequired();
+        builder.Entity<Profile>().Property(p => p.Password).IsRequired().HasMaxLength(40);
+        builder.Entity<Profile>().Property(p => p.Role).IsRequired().HasMaxLength(16);
+        builder.Entity<Profile>().Property(p => p.CafeteriaName).IsRequired().HasMaxLength(30);
+        builder.Entity<Profile>().Property(p => p.Experience).IsRequired().HasMaxLength(10);
         builder.Entity<Profile>().Property(p => p.ProfilePicture).IsRequired();
-        builder.Entity<Profile>().Property(p => p.PaymentMethod).IsRequired();
+        builder.Entity<Profile>().Property(p => p.PaymentMethod).IsRequired().HasMaxLength(15);
         builder.Entity<Profile>().Property(p => p.IsFirstLogin).IsRequired();
-        builder.Entity<Profile>().Property(p => p.Plan).IsRequired();
+        builder.Entity<Profile>().Property(p => p.Plan).IsRequired().HasMaxLength(10);
         builder.Entity<Profile>().Property(p => p.HasPlan).IsRequired();
 
         builder.UseSnakeCaseNamingConvention();
