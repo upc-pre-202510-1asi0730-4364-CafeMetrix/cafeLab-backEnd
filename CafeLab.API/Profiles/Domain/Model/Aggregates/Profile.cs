@@ -1,8 +1,8 @@
 namespace CafeLab.API.Profiles.Domain.Model.Aggregates;
 
-public class Profile
+public partial class Profile
 {
-    public int Id { get; set; }
+    public int Id { get; }
     public string Email { get; set; }
     public string Password { get; set; }
     public string Role { get; set; }
