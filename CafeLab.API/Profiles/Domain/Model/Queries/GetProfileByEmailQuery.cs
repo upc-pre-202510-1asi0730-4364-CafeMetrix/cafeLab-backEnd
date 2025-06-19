@@ -1,3 +1,11 @@
+using CafeLab.API.Profiles.Domain.Model.ValueObjects;
+
 namespace CafeLab.API.Profiles.Domain.Model.Queries;
 
-public record GetProfileByEmailQuery();
+/// <summary>
+/// Get Profile by Email Query 
+/// </summary>
+/// <param name="Email">
+/// The <see cref="EmailAddress"/> email address of the profile to retrieve
+/// </param>
+public record GetProfileByEmailQuery(EmailAddress Email);
