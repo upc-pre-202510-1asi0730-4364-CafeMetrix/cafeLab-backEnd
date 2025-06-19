@@ -43,11 +43,10 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
 
-        //Profile Context -> del aggregate
+        // Profile Context
         builder.Entity<Profile>().HasKey(p => p.Id);
         builder.Entity<Profile>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Profile>().Property(p => p.Name).IsRequired().HasMaxLength(40);
-        builder.Entity<Profile>().Property(p => p.Email).IsRequired().HasMaxLength(40);
         builder.Entity<Profile>().Property(p => p.Password).IsRequired().HasMaxLength(40);
         builder.Entity<Profile>().Property(p => p.Role).IsRequired().HasMaxLength(16);
         builder.Entity<Profile>().Property(p => p.CafeteriaName).IsRequired().HasMaxLength(30);
@@ -57,6 +56,14 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Profile>().Property(p => p.IsFirstLogin).IsRequired();
         builder.Entity<Profile>().Property(p => p.Plan).IsRequired().HasMaxLength(10);
         builder.Entity<Profile>().Property(p => p.HasPlan).IsRequired();
+
+        // Mapeo del value object EmailAddress
+        builder.Entity<Profile>().OwnsOne(p => p.Email,
+            e =>
+            {
+                e.WithOwner().HasForeignKey("Id");
+                e.Property(a => a.Address).HasColumnName("EmailAddress").IsRequired().HasMaxLength(40);
+            });
 
         builder.UseSnakeCaseNamingConvention();
     }
