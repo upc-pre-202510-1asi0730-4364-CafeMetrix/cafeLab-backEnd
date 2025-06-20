@@ -1,3 +1,8 @@
+using CafeLab.API.Profiles.Application.Internal.CommandServices;
+using CafeLab.API.Profiles.Application.Internal.QueryServices;
+using CafeLab.API.Profiles.Domain.Repositories;
+using CafeLab.API.Profiles.Domain.Services;
+using CafeLab.API.Profiles.Infrastructure.Persistance.EFC.Repositories;
 using CafeLab.API.Shared.Domain.Repositories;
 
 //builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
@@ -12,6 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
+
+// Add CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllPolicy",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 //AQUÍ ESCOGEMOS LA CONEXIÓN DE DB QUE QUEREMOS USAR ---------------------------------------------
 //Porque cada motor de db tiene su propia cadena de conexión
@@ -31,7 +45,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 //------------------------------------------------------------------------------------------------
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -42,6 +55,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // otros bounded contexts...
 
 // Profiles Bounded Context
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
+builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
 
 // IAM Bounded Context
 
@@ -64,6 +80,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Apply CORS Policy
+app.UseCors("AllowAllPolicy");
 
 // Add Authorization Middleware to Pipeline
 app.UseHttpsRedirection();
