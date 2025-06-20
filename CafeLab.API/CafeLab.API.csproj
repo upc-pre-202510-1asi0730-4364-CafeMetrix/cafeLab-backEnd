@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="EntityFrameworkCore.CreatedUpdatedDate" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="CostosLote\Application\ACL\" />
+      <Folder Include="CostosLote\Application\Internal\" />
+      <Folder Include="CostosLote\Domain\Model\" />
+      <Folder Include="CostosLote\Domain\Repositories\" />
+      <Folder Include="CostosLote\Domain\Services\" />
+      <Folder Include="CostosLote\Infrastructure\Persistence\EFC\Repositories\" />
+      <Folder Include="CostosLote\Interfaces\ACL\" />
+      <Folder Include="CostosLote\Interfaces\REST\Resources\" />
+      <Folder Include="CostosLote\Interfaces\REST\Transform\" />
+      <Folder Include="CuppingSessions\Application\ACL\" />
+      <Folder Include="CuppingSessions\Application\Internal\" />
+      <Folder Include="CuppingSessions\Domain\Model\" />
+      <Folder Include="CuppingSessions\Domain\Repositories\" />
+      <Folder Include="CuppingSessions\Domain\Services\" />
+      <Folder Include="CuppingSessions\Infrastructure\Persistence\EFC\Repositories\" />
+      <Folder Include="CuppingSessions\Interfaces\ACL\" />
+      <Folder Include="CuppingSessions\Interfaces\REST\Resources\" />
+      <Folder Include="CuppingSessions\Interfaces\REST\Transform\" />
+      <Folder Include="MovimientosInventario\Application\ACL\" />
+      <Folder Include="MovimientosInventario\Application\Internal\" />
+      <Folder Include="MovimientosInventario\Domain\Model\" />
+      <Folder Include="MovimientosInventario\Domain\Repositories\" />
+      <Folder Include="MovimientosInventario\Domain\Services\" />
+      <Folder Include="MovimientosInventario\Infrastructure\Persistence\EFC\Repositories\" />
+      <Folder Include="MovimientosInventario\Interfaces\ACL\" />
+      <Folder Include="MovimientosInventario\Interfaces\REST\Resources\" />
+      <Folder Include="MovimientosInventario\Interfaces\REST\Transform\" />
+      <Folder Include="Shared\Domain\Repositories\" />
+    </ItemGroup>
+
+</Project>
