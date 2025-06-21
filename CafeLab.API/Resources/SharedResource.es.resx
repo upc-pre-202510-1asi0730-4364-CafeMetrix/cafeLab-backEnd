@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="Welcome" xml:space="preserve">
+    <value>Bienvenido a CafeLab</value>
+  </data>
+  <data name="CoffeeNotFound" xml:space="preserve">
+    <value>Café no encontrado</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Usuario no encontrado</value>
+  </data>
+  <data name="DefectNotFound" xml:space="preserve">
+    <value>Defecto no encontrado.</value>
+  </data>
+  <data name="DefectCreated" xml:space="preserve">
+    <value>Defecto creado exitosamente.</value>
+  </data>
+  <data name="DefectUpdated" xml:space="preserve">
+    <value>Defecto actualizado exitosamente.</value>
+  </data>
+  <data name="DefectDeleted" xml:space="preserve">
+    <value>Defecto eliminado exitosamente.</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Este campo es requerido.</value>
+  </data>
+  <data name="IdMismatch" xml:space="preserve">
+    <value>El ID de la ruta no coincide con el ID del cuerpo de la solicitud.</value>
+  </data>
+  <data name="InvalidData" xml:space="preserve">
+    <value>Los datos proporcionados no son válidos.</value>
+  </data>
+  <data name="ServerError" xml:space="preserve">
+    <value>Ha ocurrido un error en el servidor.</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>No está autorizado para realizar esta acción.</value>
+  </data>
+  <data name="Forbidden" xml:space="preserve">
+    <value>No tiene permisos para realizar esta acción.</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>El recurso solicitado no fue encontrado.</value>
+  </data>
+  <data name="BadRequest" xml:space="preserve">
+    <value>La solicitud no es válida.</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Credenciales inválidas.</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>El usuario ya existe.</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Ocurrió un error inesperado. Por favor, intente de nuevo.</value>
+  </data>
+  <data name="TastingPatternNotFound" xml:space="preserve">
+    <value>Patrón de cata no encontrado.</value>
+  </data>
+  <data name="TastingPatternCreated" xml:space="preserve">
+    <value>Patrón de cata creado exitosamente.</value>
+  </data>
+  <data name="TastingPatternUpdated" xml:space="preserve">
+    <value>Patrón de cata actualizado exitosamente.</value>
+  </data>
+  <data name="TastingPatternDeleted" xml:space="preserve">
+    <value>Patrón de cata eliminado exitosamente.</value>
+  </data>
+  <data name="CalibrationNotFound" xml:space="preserve">
+    <value>Calibración no encontrada.</value>
+  </data>
+  <data name="CalibrationCreated" xml:space="preserve">
+    <value>Calibración creada exitosamente.</value>
+  </data>
+  <data name="CalibrationUpdated" xml:space="preserve">
+    <value>Calibración actualizada exitosamente.</value>
+  </data>
+  <data name="CalibrationDeleted" xml:space="preserve">
+    <value>Calibración eliminada exitosamente.</value>
+  </data>
+</root> 

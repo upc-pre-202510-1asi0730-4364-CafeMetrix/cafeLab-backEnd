@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/CafeLab.API/CafeLab.API.ax4krv6hs6.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\CafeLab.API.ax4krv6hs6.bundle.scp.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ax4krv6hs6"},{"Name":"integrity","Value":"sha256-7sysVjiwRvQhxuMmG3AaKywnvWTc/nh38IysfVHKzOI="},{"Name":"label","Value":"_content/CafeLab.API/CafeLab.API.bundle.scp.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1129"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00227sysVjiwRvQhxuMmG3AaKywnvWTc/nh38IysfVHKzOI=\u0022"},{"Name":"Last-Modified","Value":"Fri, 13 Jun 2025 04:58:40 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/CafeLab.API/CafeLab.API.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\CafeLab.API.ax4krv6hs6.bundle.scp.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-7sysVjiwRvQhxuMmG3AaKywnvWTc/nh38IysfVHKzOI="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1129"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00227sysVjiwRvQhxuMmG3AaKywnvWTc/nh38IysfVHKzOI=\u0022"},{"Name":"Last-Modified","Value":"Fri, 13 Jun 2025 04:58:40 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

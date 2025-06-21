@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CafeLab.API</name>
+    </assembly>
+    <members>
+        <member name="T:CafeLab.API.Domain.Entities.Defect">
+            <summary>
+            Representa un defecto encontrado en una evaluación sensorial de café.
+            Esta entidad define los defectos que pueden afectar la calidad del café.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.Name">
+            <summary>
+            Nombre del defecto.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.Description">
+            <summary>
+            Descripción detallada del defecto.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.Category">
+            <summary>
+            Categoría del defecto (por ejemplo: Primario, Secundario).
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.Severity">
+            <summary>
+            Nivel de severidad del defecto (por ejemplo: Bajo, Medio, Alto).
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.Solution">
+            <summary>
+            Solución recomendada para el defecto.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.CreatedBy">
+            <summary>
+            Usuario que creó el defecto.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Defect.#ctor">
+            <summary>
+            Constructor que inicializa las colecciones.
+            </summary>
+        </member>
+        <member name="T:CafeLab.API.Domain.Entities.TastingPattern">
+            <summary>
+            Representa un patrón de cata para evaluar el café.
+            Esta entidad define la metodología y pasos para realizar una cata de café.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.TastingPattern.Name">
+            <summary>
+            Nombre del patrón de cata.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.TastingPattern.Description">
+            <summary>
+            Descripción detallada del patrón de cata.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.TastingPattern.Steps">
+            <summary>
+            Pasos a seguir durante la cata.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.TastingPattern.ScoringSystem">
+            <summary>
+            Sistema de puntuación utilizado en la cata.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.TastingPattern.#ctor">
+            <summary>
+            Constructor que inicializa las colecciones.
+            </summary>
+        </member>
+        <member name="T:CafeLab.API.Domain.Entities.User">
+            <summary>
+            Representa un usuario en el sistema.
+            Esta entidad es el agregado raíz para la gestión de usuarios.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.Username">
+            <summary>
+            Nombre de usuario único para el inicio de sesión.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.Email">
+            <summary>
+            Correo electrónico del usuario.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.PasswordHash">
+            <summary>
+            Contraseña hasheada del usuario.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.FullName">
+            <summary>
+            Nombre completo del usuario.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.Role">
+            <summary>
+            Rol del usuario en el sistema (por ejemplo: Admin, Catador, Usuario).
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.IsActive">
+            <summary>
+            Indica si el usuario está activo en el sistema.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.LastLoginDate">
+            <summary>
+            Fecha del último inicio de sesión del usuario.
+            </summary>
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Swagger.AddResponseHeadersFilter">
+            <summary>
+            Filtro para agregar encabezados de respuesta en la documentación de Swagger.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Swagger.AddResponseHeadersFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Aplica el filtro a la operación de Swagger.
+            </summary>
+            <param name="operation">La operación de Swagger a modificar.</param>
+            <param name="context">El contexto del filtro.</param>
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Swagger.Examples.PaginationExampleProvider">
+            <summary>
+            Proveedor de ejemplos para respuestas paginadas.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Swagger.Examples.PaginationExampleProvider.GetExamples">
+            <summary>
+            Obtiene un ejemplo de respuesta paginada.
+            </summary>
+            <returns>Un objeto con datos de ejemplo.</returns>
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Swagger.Examples.PaginationQueryExampleProvider">
+            <summary>
+            Proveedor de ejemplos para consultas paginadas.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Swagger.Examples.PaginationQueryExampleProvider.GetExamples">
+            <summary>
+            Obtiene un ejemplo de consulta paginada.
+            </summary>
+            <returns>Un objeto con datos de ejemplo.</returns>
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Swagger.Examples.PaginationResponseExampleProvider">
+            <summary>
+            Proveedor de ejemplos para respuestas paginadas con datos.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Swagger.Examples.PaginationResponseExampleProvider.GetExamples">
+            <summary>
+            Obtiene un ejemplo de respuesta paginada con datos.
+            </summary>
+            <returns>Un objeto con datos de ejemplo.</returns>
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Swagger.Examples.ValidationErrorExampleProvider">
+            <summary>
+            Proveedor de ejemplos para errores de validación.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Swagger.Examples.ValidationErrorExampleProvider.GetExamples">
+            <summary>
+            Obtiene un ejemplo de error de validación.
+            </summary>
+            <returns>Un objeto con datos de ejemplo.</returns>
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Swagger.Examples.ValidationWarningExampleProvider">
+            <summary>
+            Proveedor de ejemplos para advertencias de validación.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Swagger.Examples.ValidationWarningExampleProvider.GetExamples">
+            <summary>
+            Obtiene un ejemplo de advertencia de validación.
+            </summary>
+            <returns>Un objeto con datos de ejemplo.</returns>
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Swagger.Examples.ValidationInfoExampleProvider">
+            <summary>
+            Proveedor de ejemplos para información de validación.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Swagger.Examples.ValidationInfoExampleProvider.GetExamples">
+            <summary>
+            Obtiene un ejemplo de información de validación.
+            </summary>
+            <returns>Un objeto con datos de ejemplo.</returns>
+        </member>
+        <member name="T:CafeLab.API.SharedResource">
+            <summary>
+            This is a dummy class to group shared resources for localization.
+            </summary>
+        </member>
+        <member name="T:CafeLab.Domain.Entities.BaseEntity">
+            <summary>
+            Clase base para todas las entidades del dominio.
+            Proporciona propiedades comunes como Id y timestamps.
+            </summary>
+        </member>
+        <member name="P:CafeLab.Domain.Entities.BaseEntity.Id">
+            <summary>
+            Identificador único de la entidad.
+            </summary>
+        </member>
+        <member name="P:CafeLab.Domain.Entities.BaseEntity.CreatedAt">
+            <summary>
+            Fecha y hora de creación de la entidad.
+            </summary>
+        </member>
+        <member name="P:CafeLab.Domain.Entities.BaseEntity.UpdatedAt">
+            <summary>
+            Fecha y hora de la última actualización de la entidad.
+            </summary>
+        </member>
+        <member name="M:CafeLab.Domain.Entities.BaseEntity.#ctor">
+            <summary>
+            Constructor que inicializa los timestamps de auditoría.
+            </summary>
+        </member>
+    </members>
+</doc>

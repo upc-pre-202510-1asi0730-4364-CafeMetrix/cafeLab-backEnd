@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\PC- Usuario\\RiderProjects\\CafeLab.API\\CafeLab.API\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\CafeLab.API.bundle.scp.css",
+      "PackagePath": "staticwebassets\\CafeLab.API.ax4krv6hs6.bundle.scp.css"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.CafeLab.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.CafeLab.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.CafeLab.API.props",
+      "PackagePath": "build\\CafeLab.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.CafeLab.API.props",
+      "PackagePath": "buildMultiTargeting\\CafeLab.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.CafeLab.API.props",
+      "PackagePath": "buildTransitive\\CafeLab.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
