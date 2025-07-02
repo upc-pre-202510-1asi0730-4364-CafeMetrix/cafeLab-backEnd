@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\CafeLab.API.props" />
-</Project>
