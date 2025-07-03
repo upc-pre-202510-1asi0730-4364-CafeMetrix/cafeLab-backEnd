@@ -18,20 +18,20 @@ namespace CafeLab.API.Profiles.Application.ACL;
 public class ProfilesContextFacade(IProfileCommandService profileCommandService, IProfileQueryService profileQueryService) : IProfilesContextFacade
 {
    // inheritedDoc
-   public async Task<string> CreateProfile(string name, string email, string password, string role, string cafeteriaName,
+   public async Task<int> CreateProfile(string name, string email, string password, string role, string cafeteriaName,
       string experience, string profilePicture, string paymentMethod, bool isFirstLogin, string plan, bool hasPlan)
    {
       var createProfileCommand = new CreateProfileCommand(name, email, password, role, cafeteriaName, experience,
          profilePicture, paymentMethod, isFirstLogin, plan, hasPlan);
       var profile = await profileCommandService.Handle(createProfileCommand);
-      return profile != null ? profile.Id : string.Empty;
+      return profile != null ? profile.Id : 0;
    }
 
    // inheritedDoc
-   public async Task<string> FetchProfileIdByEmail(string email)
+   public async Task<int> FetchProfileIdByEmail(string email)
    {
       var getProfileByEmailQuery = new GetProfileByEmailQuery(new EmailAddress(email));
       var profile = await profileQueryService.Handle(getProfileByEmailQuery);
-      return profile?.Id ?? string.Empty;
+      return profile != null ? profile.Id : 0;
    }
 }

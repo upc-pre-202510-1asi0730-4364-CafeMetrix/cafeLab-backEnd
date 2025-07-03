@@ -44,7 +44,7 @@ public interface IProfilesContextFacade
     /// <returns>
     /// The id of the created profile if successful, 0 otherwise
     /// </returns>
-    Task<string> CreateProfile(string name, 
+    Task<int> CreateProfile(string name, 
         string email, 
         string password, 
         string role, 
@@ -65,5 +65,5 @@ public interface IProfilesContextFacade
     /// <returns>
     /// The id of the profile if found, 0 otherwise
     /// </returns>
-    Task<string> FetchProfileIdByEmail(string email);
+    Task<int> FetchProfileIdByEmail(string email);
 }

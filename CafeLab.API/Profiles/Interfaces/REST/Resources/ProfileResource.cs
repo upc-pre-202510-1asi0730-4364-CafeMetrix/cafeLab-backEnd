@@ -4,7 +4,7 @@ namespace CafeLab.API.Profiles.Interfaces.REST.Resources;
 /// Profile resource for REST API 
 /// </summary>
 /// <param name="Id">
-/// The unique identifier of the profile
+/// The unique identifier of the profile (int)
 /// </param>
 /// <param name="Name">
 /// The name of the profile
@@ -33,4 +33,4 @@ namespace CafeLab.API.Profiles.Interfaces.REST.Resources;
 /// <param name="HasPlan">
 /// Indicates if the profile has an assigned plan
 /// </param>
-public record ProfileResource(string Id, string Name, string Email, string Role, string CafeteriaName, string Experience, string ProfilePicture, string PaymentMethod, string Plan, bool HasPlan);
+public record ProfileResource(int Id, string Name, string Email, string Role, string CafeteriaName, string Experience, string ProfilePicture, string PaymentMethod, string Plan, bool HasPlan);

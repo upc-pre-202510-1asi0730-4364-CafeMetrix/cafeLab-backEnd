@@ -13,7 +13,7 @@ namespace CafeLab.API.Profiles.Domain.Model.Aggregates;
 
 public partial class Profile
 {
-    public string Id { get; }
+    public int Id { get; }
     
     public string Name { get; private set; }
     public EmailAddress Email { get; private set; }
@@ -36,6 +36,7 @@ public partial class Profile
     
     public Profile(string name , string email, string password, string role, string cafeteriaName, string experience, string profilePicture, string paymentMethod, bool isFirstLogin, string plan, bool hasPlan)
     {
+        // El Id será asignado por la base de datos (Identity)
         Name = name;
         Email = new EmailAddress(email);
         Password = password;

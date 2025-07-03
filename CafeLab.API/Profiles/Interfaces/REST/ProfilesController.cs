@@ -5,6 +5,7 @@ using CafeLab.API.Profiles.Interfaces.REST.Resources;
 using CafeLab.API.Profiles.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CafeLab.API.Profiles.Interfaces.REST;
 
@@ -14,11 +15,29 @@ namespace CafeLab.API.Profiles.Interfaces.REST;
 [SwaggerTag("Available Profile Endpoints.")]
 public class ProfilesController(IProfileCommandService profileCommandService, IProfileQueryService profileQueryService) : ControllerBase
 {
+    // Filtro para manejar errores de binding de parámetros
+    public class ValidateIntRouteParameterAttribute : ActionFilterAttribute
+    {
+        private readonly string _parameterName;
+        public ValidateIntRouteParameterAttribute(string parameterName)
+        {
+            _parameterName = parameterName;
+        }
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (!context.ActionArguments.TryGetValue(_parameterName, out var value) || value is not int)
+            {
+                context.Result = new BadRequestObjectResult($"El parámetro '{_parameterName}' debe ser un número entero.");
+            }
+        }
+    }
+
     [HttpGet("{profileId:int}")]
+    [ValidateIntRouteParameter("profileId")]
     [SwaggerOperation("Get Profile by Id", "Get a profile by its unique identifier.", OperationId = "GetProfileById")]
     [SwaggerResponse(200, "The profile was found and returned.", typeof(ProfileResource))]
     [SwaggerResponse(404, "The profile was not found.")]
-    public async Task<IActionResult> GetProfileById(string profileId)
+    public async Task<IActionResult> GetProfileById(int profileId)
     {
         var getProfileByIdQuery = new GetProfileByIdQuery(profileId);
         var profile = await profileQueryService.Handle(getProfileByIdQuery);

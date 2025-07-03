@@ -28,6 +28,6 @@ public class ProfileQueryService(IProfileRepository profileRepository) : IProfil
     /// <inheritdoc />
     public async Task<Profile?> Handle(GetProfileByIdQuery query)
     {
-        return await profileRepository.FindByIdAsync(int.Parse(query.ProfileId));
+        return await profileRepository.FindByIdAsync(query.ProfileId);
     }
 }

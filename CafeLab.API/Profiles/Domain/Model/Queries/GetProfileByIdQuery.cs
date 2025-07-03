@@ -1,3 +1,3 @@
 namespace CafeLab.API.Profiles.Domain.Model.Queries;
 
-public record GetProfileByIdQuery(string ProfileId);
+public record GetProfileByIdQuery(int ProfileId);

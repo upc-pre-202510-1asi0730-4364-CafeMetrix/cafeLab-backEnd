@@ -35,32 +35,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.CafeLab.API: http.executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (1).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (10).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (2).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (3).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (4).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (5).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (6).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (7).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (8).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure (9).executor": "Run",
-    "Azure - Web App.Publish CafeLab.API to Azure.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/profiles",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.CafeLab.API: http.executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (1).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (10).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (2).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (3).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (4).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (5).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (6).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (7).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (8).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure (9).executor&quot;: &quot;Run&quot;,
+    &quot;Azure - Web App.Publish CafeLab.API to Azure.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/profiles&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.CafeLab.API: http">
     <configuration name="Publish CafeLab.API to Azure (10)" type="AzureWebAppDeploy">
       <option name="appServicePlanName" value="asp-app-250702174440" />
