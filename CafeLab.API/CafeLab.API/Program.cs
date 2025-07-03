@@ -23,7 +23,45 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
+/**
+ * Punto de entrada principal de la aplicación .NET para el sistema CafeLab.
+ * 
+ * Este archivo configura y inicializa la aplicación ASP.NET Core con:
+ * - Configuración de servicios y dependencias
+ * - Configuración de autenticación JWT
+ * - Configuración de base de datos Entity Framework
+ * - Configuración de Swagger/OpenAPI
+ * - Configuración de CORS
+ * - Configuración de logging y monitoreo
+ * 
+ * Características implementadas:
+ * - Arquitectura limpia con separación de capas
+ * - Inyección de dependencias
+ * - Autenticación JWT con refresh tokens
+ * - Base de datos MySQL con Entity Framework
+ * - Documentación automática con Swagger
+ * - Configuración de seguridad y CORS
+ * - Logging estructurado
+ * - Sistema de perfiles y usuarios
+ * - Gestión de defectos y calibraciones
+ * 
+ * Estructura de la aplicación:
+ * - Application: Lógica de negocio y servicios
+ * - Domain: Entidades y interfaces del dominio
+ * - Infrastructure: Implementaciones de persistencia y seguridad
+ * - Controllers: Endpoints de la API REST
+ * - Profiles: Sistema de perfiles de usuario
+ */
+
 var builder = WebApplication.CreateBuilder(args);
+
+/**
+ * Configuración de servicios de la aplicación
+ * 
+ * Se registran todos los servicios necesarios para el funcionamiento
+ * de la aplicación, incluyendo servicios de negocio, persistencia,
+ * autenticación y documentación.
+ */
 
 // =====================
 // Configuración de servicios generales
@@ -52,23 +90,17 @@ builder.Services.AddCors(options =>
 // =====================
 // Configuración de base de datos para ambos contextos
 // =====================
+// Se obtiene la cadena de conexión desde appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connectionString == null) throw new InvalidOperationException("Connection string not found.");
 
 // Contexto compartido (perfiles, etc)
+// Se configura para usar MySQL y que las migraciones se apliquen automáticamente
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    if (builder.Environment.IsDevelopment())
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
-    else if (builder.Environment.IsProduction())
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Error);
-});
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Contexto de defects/calibration/IAM
+// También se configura para usar MySQL y migrar automáticamente
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
@@ -92,9 +124,13 @@ builder.Services.AddSwaggerGen(options =>
 // =====================
 // Inyección de dependencias
 // =====================
-// Shared Bounded Context
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+// Shared Bounded Context (Perfiles)
+builder.Services.AddScoped<CafeLab.API.Shared.Domain.Repositories.IUnitOfWork, CafeLab.API.Shared.Infrastructure.Persistence.EFC.Repositories.UnitOfWork>();
+builder.Services.AddScoped(typeof(CafeLab.API.Shared.Domain.Repositories.IBaseRepository<>), typeof(CafeLab.API.Shared.Infrastructure.Persistence.EFC.Repositories.BaseRepository<>));
+
+// Contexto principal (Defects, Calibration, IAM)
+builder.Services.AddScoped<CafeLab.API.Domain.Interfaces.IUnitOfWork, CafeLab.API.Infrastructure.Persistence.EFC.UnitOfWork>();
+builder.Services.AddScoped(typeof(CafeLab.API.Domain.Interfaces.IRepository<>), typeof(CafeLab.API.Infrastructure.Persistence.EFC.Repositories.BaseRepository<>));
 
 // Profiles Bounded Context
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();

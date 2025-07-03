@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+<<<<<<< HEAD
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeLab.API", "CafeLab.API\CafeLab.API.csproj", "{8253AC82-842E-4E7F-A298-D78895DEEA9D}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeLab.API", "CafeLab.API\CafeLab.API.csproj", "{535EA709-D35C-4E56-9769-D74946EB6535}"
+>>>>>>> feature/defects
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
+		{8253AC82-842E-4E7F-A298-D78895DEEA9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8253AC82-842E-4E7F-A298-D78895DEEA9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8253AC82-842E-4E7F-A298-D78895DEEA9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8253AC82-842E-4E7F-A298-D78895DEEA9D}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{535EA709-D35C-4E56-9769-D74946EB6535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535EA709-D35C-4E56-9769-D74946EB6535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535EA709-D35C-4E56-9769-D74946EB6535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535EA709-D35C-4E56-9769-D74946EB6535}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> feature/defects
+	EndGlobalSection
+EndGlobal

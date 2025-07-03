@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Invalid credentials.</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>User already exists.</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>An unexpected error occurred. Please try again.</value>
+  </data>
+  <data name="DefectNotFound" xml:space="preserve">
+    <value>Defect not found.</value>
+  </data>
+  <data name="DefectCreated" xml:space="preserve">
+    <value>Defect created successfully.</value>
+  </data>
+  <data name="DefectUpdated" xml:space="preserve">
+    <value>Defect updated successfully.</value>
+  </data>
+  <data name="DefectDeleted" xml:space="preserve">
+    <value>Defect deleted successfully.</value>
+  </data>
+  <data name="TastingPatternNotFound" xml:space="preserve">
+    <value>Tasting pattern not found.</value>
+  </data>
+  <data name="TastingPatternCreated" xml:space="preserve">
+    <value>Tasting pattern created successfully.</value>
+  </data>
+  <data name="TastingPatternUpdated" xml:space="preserve">
+    <value>Tasting pattern updated successfully.</value>
+  </data>
+  <data name="TastingPatternDeleted" xml:space="preserve">
+    <value>Tasting pattern deleted successfully.</value>
+  </data>
+  <data name="CalibrationNotFound" xml:space="preserve">
+    <value>Calibration not found.</value>
+  </data>
+  <data name="CalibrationCreated" xml:space="preserve">
+    <value>Calibration created successfully.</value>
+  </data>
+  <data name="CalibrationUpdated" xml:space="preserve">
+    <value>Calibration updated successfully.</value>
+  </data>
+  <data name="CalibrationDeleted" xml:space="preserve">
+    <value>Calibration deleted successfully.</value>
+  </data>
+  <data name="IdMismatch" xml:space="preserve">
+    <value>The ID in the route does not match the ID in the request body.</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>This field is required.</value>
+  </data>
+  <data name="InvalidData" xml:space="preserve">
+    <value>The provided data is not valid.</value>
+  </data>
+  <data name="ServerError" xml:space="preserve">
+    <value>An error occurred on the server.</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>You are not authorized to perform this action.</value>
+  </data>
+  <data name="Forbidden" xml:space="preserve">
+    <value>You do not have permission to perform this action.</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>The requested resource was not found.</value>
+  </data>
+  <data name="BadRequest" xml:space="preserve">
+    <value>The request is not valid.</value>
+  </data>
+</root> 
