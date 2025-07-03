@@ -66,12 +66,25 @@ builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
 
 // CoffeeProduction Bounded Context
-builder.Services.AddScoped<ISupplierCommandService, SupplierCommandService>();
 builder.Services.AddScoped<ISupplierQueryService, SupplierQueryService>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<ISupplierCommandService>(provider =>
+{
+    var supplierRepository = provider.GetRequiredService<ISupplierRepository>();
+    var profileRepository = provider.GetRequiredService<IProfileRepository>();
+    var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+    return new SupplierCommandService(supplierRepository, profileRepository, unitOfWork);
+});
 
 // CoffeeLot dependencies
-builder.Services.AddScoped<ICoffeeLotCommandService, CoffeeLotCommandService>();
+builder.Services.AddScoped<ICoffeeLotCommandService>(provider =>
+{
+    var coffeeLotRepository = provider.GetRequiredService<ICoffeeLotRepository>();
+    var supplierRepository = provider.GetRequiredService<ISupplierRepository>();
+    var profileRepository = provider.GetRequiredService<IProfileRepository>();
+    var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+    return new CoffeeLotCommandService(coffeeLotRepository, supplierRepository, profileRepository, unitOfWork);
+});
 builder.Services.AddScoped<ICoffeeLotQueryService, CoffeeLotQueryService>();
 builder.Services.AddScoped<ICoffeeLotRepository, CoffeeLotRepository>();
 builder.Services.AddScoped<CoffeeLotResourceFromEntityAssembler>();
@@ -82,7 +95,14 @@ builder.Services.AddScoped<CreateCoffeeLotCommandFromResourceAssembler>();
 // TokenSettings Configuration
 
 // RoastProfile dependencies
-builder.Services.AddScoped<IRoastProfileCommandService, RoastProfileCommandService>();
+builder.Services.AddScoped<IRoastProfileCommandService>(provider =>
+{
+    var roastProfileRepository = provider.GetRequiredService<IRoastProfileRepository>();
+    var coffeeLotRepository = provider.GetRequiredService<ICoffeeLotRepository>();
+    var profileRepository = provider.GetRequiredService<IProfileRepository>();
+    var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+    return new RoastProfileCommandService(roastProfileRepository, coffeeLotRepository, profileRepository, unitOfWork);
+});
 builder.Services.AddScoped<IRoastProfileQueryService, RoastProfileQueryService>();
 builder.Services.AddScoped<IRoastProfileRepository, RoastProfileRepository>();
 builder.Services.AddScoped<RoastProfileResourceFromEntityAssembler>();

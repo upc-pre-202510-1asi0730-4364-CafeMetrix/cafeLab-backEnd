@@ -3,6 +3,7 @@ using CafeLab.API.CoffeeProduction.Domain.Model.Commands;
 using CafeLab.API.CoffeeProduction.Domain.Repositories;
 using CafeLab.API.CoffeeProduction.Domain.Services;
 using CafeLab.API.Shared.Domain.Repositories;
+using CafeLab.API.Profiles.Domain.Repositories;
 using System.Text.Json;
 
 namespace CafeLab.API.CoffeeProduction.Application.Internal.CommandServices;
@@ -11,20 +12,28 @@ public class CoffeeLotCommandService : ICoffeeLotCommandService
 {
     private readonly ICoffeeLotRepository _coffeeLotRepository;
     private readonly ISupplierRepository _supplierRepository;
+    private readonly IProfileRepository _profileRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public CoffeeLotCommandService(
         ICoffeeLotRepository coffeeLotRepository,
         ISupplierRepository supplierRepository,
+        IProfileRepository profileRepository,
         IUnitOfWork unitOfWork)
     {
         _coffeeLotRepository = coffeeLotRepository;
         _supplierRepository = supplierRepository;
+        _profileRepository = profileRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<CoffeeLot> CreateAsync(CreateCoffeeLotCommand command)
     {
+        // Validar que el UserId exista en Profile
+        var profile = await _profileRepository.FindByIdAsync(command.UserId);
+        if (profile == null)
+            throw new InvalidOperationException($"No existe un usuario registrado con id {command.UserId}");
+
         // Validate supplier exists and belongs to user
         var supplier = await _supplierRepository.GetByIdAsync(command.SupplierId);
         if (supplier == null)
