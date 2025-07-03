@@ -271,3 +271,4 @@ C:\Users\josep\Downloads\Cafelab\back\CafeLab.API\CafeLab.API\obj\Debug\net9.0\C
 C:\Users\josep\Downloads\Cafelab\back\CafeLab.API\CafeLab.API\obj\Debug\net9.0\CafeLab.API.pdb
 C:\Users\josep\Downloads\Cafelab\back\CafeLab.API\CafeLab.API\obj\Debug\net9.0\CafeLab.API.genruntimeconfig.cache
 C:\Users\josep\Downloads\Cafelab\back\CafeLab.API\CafeLab.API\obj\Debug\net9.0\ref\CafeLab.API.dll
+C:\Users\josep\Downloads\Cafelab\back\CafeLab.API\CafeLab.API\obj\Debug\net9.0\CafeLab.API.sourcelink.json

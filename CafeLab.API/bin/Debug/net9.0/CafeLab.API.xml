@@ -4,10 +4,726 @@
         <name>CafeLab.API</name>
     </assembly>
     <members>
+        <member name="T:CafeLab.API.Application.Interfaces.IAuthService">
+            <summary>
+            Interfaz para el servicio de autenticación.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Application.Interfaces.IAuthService.LoginAsync(CafeLab.API.Application.DTOs.LoginDto,System.String)">
+            <summary>
+            Autentica un usuario con username y password.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Application.Interfaces.IAuthService.RegisterAsync(CafeLab.API.Application.DTOs.RegisterDto,System.String)">
+            <summary>
+            Registra un nuevo usuario.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Application.Interfaces.IAuthService.RefreshTokenAsync(CafeLab.API.Application.DTOs.RefreshTokenDto)">
+            <summary>
+            Renueva el token de acceso usando un refresh token.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Application.Interfaces.IAuthService.LogoutAsync(System.String)">
+            <summary>
+            Cierra la sesión del usuario.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Application.Interfaces.IAuthService.GetUserProfileAsync(System.Int32)">
+            <summary>
+            Obtiene el perfil de un usuario.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Application.Interfaces.IAuthService.GetAllUsersAsync">
+            <summary>
+            Obtiene todos los usuarios del sistema.
+            </summary>
+        </member>
+        <member name="T:CafeLab.API.Application.Services.AuthService">
+            <summary>
+            Servicio de autenticación para el sistema de gestión de defectos y calibraciones.
+            Implementa las mejores prácticas del Learning Center Platform para autenticación
+            y autorización en contextos de control de calidad del café.
+            </summary>
+            <remarks>
+            Este servicio maneja toda la lógica de autenticación, incluyendo:
+            - Login y registro de usuarios
+            - Gestión de tokens JWT y refresh tokens
+            - Control de acceso basado en roles
+            - Auditoría de sesiones
+            - Bloqueo de cuentas por seguridad
+            
+            Los usuarios pueden tener diferentes roles:
+            - Admin: Acceso completo a defectos y calibraciones
+            - Technician: Acceso especializado para calibraciones
+            - User: Acceso básico a defectos y calibraciones
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.#ctor(CafeLab.API.Domain.Interfaces.IRepository{CafeLab.API.Domain.Entities.User},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{CafeLab.API.Application.Services.AuthService})">
+            <summary>
+            Constructor del servicio de autenticación.
+            </summary>
+            <param name="userRepository">Repositorio para operaciones de usuarios</param>
+            <param name="configuration">Configuración de la aplicación</param>
+            <param name="logger">Logger para auditoría y debugging</param>
+            <remarks>
+            Inyecta las dependencias necesarias para el funcionamiento del servicio.
+            El logger se utiliza para auditoría de seguridad y debugging.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.LoginAsync(CafeLab.API.Application.DTOs.LoginDto,System.String)">
+            <summary>
+            Autentica un usuario en el sistema de defectos y calibraciones.
+            </summary>
+            <param name="loginDto">Datos de login del usuario</param>
+            <param name="ipAddress">Dirección IP del cliente para auditoría</param>
+            <returns>Respuesta de autenticación con tokens y datos del usuario</returns>
+            <remarks>
+            Este método implementa el flujo completo de autenticación:
+            1. Valida los datos de entrada
+            2. Busca el usuario por username
+            3. Verifica el estado de la cuenta (activa/bloqueada)
+            4. Valida la contraseña con BCrypt
+            5. Registra el intento (exitoso o fallido)
+            6. Genera tokens JWT y refresh token
+            7. Actualiza la información de sesión
+            
+            Características de seguridad:
+            - Bloqueo automático después de 5 intentos fallidos
+            - Auditoría completa de intentos de login
+            - Tokens con expiración configurable
+            - Refresh tokens para renovación automática
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.RegisterAsync(CafeLab.API.Application.DTOs.RegisterDto,System.String)">
+            <summary>
+            Registra un nuevo usuario en el sistema de defectos y calibraciones.
+            </summary>
+            <param name="registerDto">Datos del nuevo usuario</param>
+            <param name="ipAddress">Dirección IP del cliente para auditoría</param>
+            <returns>Respuesta de registro con tokens y datos del usuario</returns>
+            <remarks>
+            Este método implementa el flujo completo de registro:
+            1. Valida todos los datos de entrada
+            2. Verifica que el username y email sean únicos
+            3. Valida la fortaleza de la contraseña
+            4. Hashea la contraseña con BCrypt
+            5. Crea el usuario con rol por defecto "User"
+            6. Genera tokens de autenticación
+            7. Registra la auditoría de creación
+            
+            Validaciones implementadas:
+            - Contraseña mínima de 6 caracteres
+            - Email válido
+            - Username y email únicos
+            - Confirmación de contraseña
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.RefreshTokenAsync(CafeLab.API.Application.DTOs.RefreshTokenDto)">
+            <summary>
+            Renueva el token de acceso usando un refresh token válido.
+            </summary>
+            <param name="refreshTokenDto">Datos del refresh token</param>
+            <returns>Respuesta con nuevos tokens de autenticación</returns>
+            <remarks>
+            Este método permite renovar la sesión sin requerir login:
+            1. Valida el refresh token
+            2. Verifica que no haya expirado
+            3. Genera nuevos tokens
+            4. Actualiza el refresh token en la base de datos
+            
+            Características de seguridad:
+            - Refresh tokens con expiración configurable
+            - Renovación automática de sesiones
+            - Invalidación de tokens anteriores
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.LogoutAsync(System.String)">
+            <summary>
+            Cierra la sesión del usuario y revoca los tokens.
+            </summary>
+            <param name="refreshToken">Refresh token a revocar</param>
+            <returns>Respuesta de confirmación de logout</returns>
+            <remarks>
+            Este método implementa el logout seguro:
+            1. Busca el usuario por refresh token
+            2. Revoca el refresh token
+            3. Actualiza la base de datos
+            4. Registra la auditoría de logout
+            
+            Características de seguridad:
+            - Revocación inmediata de tokens
+            - Auditoría de sesiones cerradas
+            - Limpieza de datos de sesión
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GetUserProfileAsync(System.Int32)">
+            <summary>
+            Obtiene el perfil del usuario autenticado.
+            </summary>
+            <param name="userId">ID del usuario</param>
+            <returns>Datos del perfil del usuario</returns>
+            <remarks>
+            Este método proporciona información del perfil para:
+            - Mostrar datos del usuario en la interfaz
+            - Verificar permisos y roles
+            - Auditoría de acceso a módulos
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GetAllUsersAsync">
+            <summary>
+            Obtiene todos los usuarios del sistema (solo para administradores).
+            </summary>
+            <returns>Lista de todos los usuarios</returns>
+            <remarks>
+            Este método está restringido a administradores y proporciona:
+            - Lista completa de usuarios
+            - Información de auditoría
+            - Estado de cuentas
+            - Roles y permisos
+            
+            Utilizado para gestión administrativa del sistema.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GenerateJwtToken(CafeLab.API.Domain.Entities.User)">
+            <summary>
+            Genera un token JWT para el usuario especificado.
+            </summary>
+            <param name="user">Usuario para el cual generar el token</param>
+            <returns>Token JWT firmado</returns>
+            <remarks>
+            Este método crea un token JWT con:
+            - Claims de identidad (ID, username, email)
+            - Claims de rol para autorización
+            - Claims personalizados (nombre completo)
+            - Firma digital con clave secreta
+            - Expiración configurable
+            
+            Los claims se utilizan para:
+            - Identificación del usuario en requests
+            - Control de acceso basado en roles
+            - Auditoría de acciones
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GenerateRefreshToken">
+            <summary>
+            Genera un refresh token seguro usando criptografía.
+            </summary>
+            <returns>Refresh token en formato Base64</returns>
+            <remarks>
+            Este método genera un refresh token criptográficamente seguro:
+            - Usa RandomNumberGenerator para máxima entropía
+            - Genera 64 bytes de datos aleatorios
+            - Convierte a Base64 para almacenamiento
+            - Único para cada sesión
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.MapToUserDto(CafeLab.API.Domain.Entities.User)">
+            <summary>
+            Mapea una entidad User a un DTO para respuesta.
+            </summary>
+            <param name="user">Entidad User a mapear</param>
+            <returns>UserDto con datos del usuario</returns>
+            <remarks>
+            Este método convierte la entidad de dominio a DTO:
+            - Excluye información sensible (password hash)
+            - Incluye información necesaria para la interfaz
+            - Mantiene la auditoría y metadatos
+            - Formatea fechas para el cliente
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GetJwtSecretKey">
+            <summary>
+            Obtiene la clave secreta para firmar JWT desde la configuración.
+            </summary>
+            <returns>Clave secreta para JWT</returns>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GetJwtIssuer">
+            <summary>
+            Obtiene el issuer del JWT desde la configuración.
+            </summary>
+            <returns>Issuer del JWT</returns>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GetJwtAudience">
+            <summary>
+            Obtiene el audience del JWT desde la configuración.
+            </summary>
+            <returns>Audience del JWT</returns>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GetJwtExpirationMinutes">
+            <summary>
+            Obtiene la duración de expiración del JWT en minutos.
+            </summary>
+            <returns>Duración en minutos</returns>
+        </member>
+        <member name="M:CafeLab.API.Application.Services.AuthService.GetRefreshTokenExpirationDays">
+            <summary>
+            Obtiene la duración de expiración del refresh token en días.
+            </summary>
+            <returns>Duración en días</returns>
+        </member>
+        <member name="T:CafeLab.API.Controllers.AuthController">
+            <summary>
+            Controlador para la autenticación y gestión de usuarios en el sistema de defectos y calibraciones.
+            Implementa las mejores prácticas del Learning Center Platform para APIs RESTful con autenticación JWT.
+            </summary>
+            <remarks>
+            Este controlador maneja todas las operaciones de autenticación y autorización:
+            - Login y registro de usuarios
+            - Gestión de tokens JWT y refresh tokens
+            - Perfiles de usuario
+            - Gestión administrativa de usuarios
+            
+            Características de seguridad implementadas:
+            - Validación de entrada en todos los endpoints
+            - Logging detallado para auditoría
+            - Manejo de errores consistente
+            - Respuestas HTTP apropiadas
+            - Documentación automática con Swagger
+            
+            Roles soportados:
+            - Admin: Acceso completo a defectos y calibraciones
+            - Technician: Acceso especializado para calibraciones
+            - User: Acceso básico a defectos y calibraciones
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.#ctor(CafeLab.API.Application.Interfaces.IAuthService,Microsoft.Extensions.Logging.ILogger{CafeLab.API.Controllers.AuthController})">
+            <summary>
+            Constructor del controlador de autenticación.
+            </summary>
+            <param name="authService">Servicio de autenticación</param>
+            <param name="logger">Logger para auditoría y debugging</param>
+            <remarks>
+            Inyecta las dependencias necesarias para el funcionamiento del controlador.
+            El logger se utiliza para auditoría de seguridad y debugging de operaciones.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.Login(CafeLab.API.Application.DTOs.LoginDto)">
+            <summary>
+            Autentica un usuario en el sistema de defectos y calibraciones.
+            </summary>
+            <param name="loginDto">Credenciales de login del usuario</param>
+            <returns>Token de acceso y información del usuario</returns>
+            <response code="200">Login exitoso - Retorna tokens y datos del usuario</response>
+            <response code="400">Credenciales inválidas o datos faltantes</response>
+            <response code="500">Error interno del servidor</response>
+            <remarks>
+            Este endpoint implementa el flujo de autenticación completo:
+            
+            **Flujo de autenticación:**
+            1. Valida los datos de entrada (username y password)
+            2. Busca el usuario en la base de datos
+            3. Verifica el estado de la cuenta (activa/bloqueada)
+            4. Valida la contraseña usando BCrypt
+            5. Registra el intento de login (exitoso o fallido)
+            6. Genera tokens JWT y refresh token
+            7. Actualiza la información de sesión
+            
+            **Características de seguridad:**
+            - Bloqueo automático después de 5 intentos fallidos
+            - Auditoría completa con IP y timestamp
+            - Tokens con expiración configurable
+            - Refresh tokens para renovación automática
+            
+            **Ejemplo de uso:**
+            ```json
+            {
+              "username": "admin",
+              "password": "password123"
+            }
+            ```
+            
+            **Respuesta exitosa:**
+            ```json
+            {
+              "success": true,
+              "message": "Login exitoso",
+              "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+              "refreshToken": "refresh_token_here",
+              "expiresAt": "2024-01-15T10:30:00Z",
+              "user": {
+                "id": 1,
+                "username": "admin",
+                "fullName": "Administrador",
+                "role": "Admin"
+              }
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.Register(CafeLab.API.Application.DTOs.RegisterDto)">
+            <summary>
+            Registra un nuevo usuario en el sistema de defectos y calibraciones.
+            </summary>
+            <param name="registerDto">Datos del nuevo usuario</param>
+            <returns>Token de acceso y información del usuario registrado</returns>
+            <response code="201">Usuario registrado exitosamente - Retorna tokens y datos del usuario</response>
+            <response code="400">Datos inválidos o usuario ya existe</response>
+            <response code="500">Error interno del servidor</response>
+            <remarks>
+            Este endpoint implementa el flujo de registro completo:
+            
+            **Flujo de registro:**
+            1. Valida todos los datos de entrada
+            2. Verifica que el username y email sean únicos
+            3. Valida la fortaleza de la contraseña
+            4. Hashea la contraseña con BCrypt
+            5. Crea el usuario con rol por defecto "User"
+            6. Genera tokens de autenticación
+            7. Registra la auditoría de creación
+            
+            **Validaciones implementadas:**
+            - Contraseña mínima de 6 caracteres
+            - Email válido
+            - Username y email únicos
+            - Confirmación de contraseña
+            
+            **Ejemplo de uso:**
+            ```json
+            {
+              "username": "nuevo_usuario",
+              "email": "usuario@cafelab.com",
+              "fullName": "Nuevo Usuario",
+              "password": "password123",
+              "confirmPassword": "password123"
+            }
+            ```
+            
+            **Respuesta exitosa:**
+            ```json
+            {
+              "success": true,
+              "message": "Usuario registrado exitosamente",
+              "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+              "refreshToken": "refresh_token_here",
+              "expiresAt": "2024-01-15T10:30:00Z",
+              "user": {
+                "id": 2,
+                "username": "nuevo_usuario",
+                "fullName": "Nuevo Usuario",
+                "role": "User"
+              }
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.RefreshToken(CafeLab.API.Application.DTOs.RefreshTokenDto)">
+            <summary>
+            Renueva el token de acceso usando un refresh token válido.
+            </summary>
+            <param name="refreshTokenDto">Refresh token para renovación</param>
+            <returns>Nuevo token de acceso y refresh token</returns>
+            <response code="200">Token renovado exitosamente - Retorna nuevos tokens</response>
+            <response code="400">Refresh token inválido o expirado</response>
+            <response code="500">Error interno del servidor</response>
+            <remarks>
+            Este endpoint permite renovar la sesión sin requerir login:
+            
+            **Flujo de renovación:**
+            1. Valida el refresh token proporcionado
+            2. Verifica que no haya expirado
+            3. Genera nuevos tokens JWT y refresh token
+            4. Actualiza el refresh token en la base de datos
+            5. Retorna los nuevos tokens
+            
+            **Características de seguridad:**
+            - Refresh tokens con expiración configurable (7 días por defecto)
+            - Renovación automática de sesiones
+            - Invalidación de tokens anteriores
+            - Auditoría de renovaciones
+            
+            **Ejemplo de uso:**
+            ```json
+            {
+              "refreshToken": "refresh_token_here"
+            }
+            ```
+            
+            **Respuesta exitosa:**
+            ```json
+            {
+              "success": true,
+              "message": "Token renovado exitosamente",
+              "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+              "refreshToken": "new_refresh_token_here",
+              "expiresAt": "2024-01-15T11:30:00Z"
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.Logout(CafeLab.API.Application.DTOs.RefreshTokenDto)">
+            <summary>
+            Cierra la sesión del usuario actual y revoca los tokens.
+            </summary>
+            <param name="refreshTokenDto">Refresh token a revocar</param>
+            <returns>Confirmación de logout exitoso</returns>
+            <response code="200">Logout exitoso - Sesión cerrada correctamente</response>
+            <response code="401">No autorizado - Token inválido</response>
+            <response code="500">Error interno del servidor</response>
+            <remarks>
+            Este endpoint implementa el logout seguro:
+            
+            **Flujo de logout:**
+            1. Valida el token de autenticación del usuario
+            2. Busca el usuario por refresh token
+            3. Revoca el refresh token en la base de datos
+            4. Registra la auditoría de logout
+            5. Retorna confirmación de logout exitoso
+            
+            **Características de seguridad:**
+            - Revocación inmediata de tokens
+            - Auditoría de sesiones cerradas
+            - Limpieza de datos de sesión
+            - Prevención de reutilización de tokens
+            
+            **Ejemplo de uso:**
+            ```json
+            {
+              "refreshToken": "refresh_token_here"
+            }
+            ```
+            
+            **Respuesta exitosa:**
+            ```json
+            {
+              "success": true,
+              "message": "Logout exitoso"
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.GetProfile">
+            <summary>
+            Obtiene el perfil del usuario autenticado.
+            </summary>
+            <returns>Información del perfil del usuario</returns>
+            <response code="200">Perfil obtenido exitosamente - Retorna datos del usuario</response>
+            <response code="401">No autorizado - Token inválido</response>
+            <response code="404">Usuario no encontrado</response>
+            <response code="500">Error interno del servidor</response>
+            <remarks>
+            Este endpoint proporciona información del perfil del usuario autenticado:
+            
+            **Información retornada:**
+            - Datos básicos del usuario (ID, username, email, nombre completo)
+            - Rol y permisos en el sistema
+            - Estado de la cuenta (activa/inactiva)
+            - Información de auditoría (último login, IP)
+            - Metadatos de creación y modificación
+            
+            **Utilización:**
+            - Mostrar datos del usuario en la interfaz
+            - Verificar permisos y roles
+            - Auditoría de acceso a módulos
+            - Gestión de sesiones
+            
+            **Respuesta exitosa:**
+            ```json
+            {
+              "success": true,
+              "message": "Perfil obtenido exitosamente",
+              "data": {
+                "id": 1,
+                "username": "admin",
+                "email": "admin@cafelab.com",
+                "fullName": "Administrador",
+                "role": "Admin",
+                "isActive": true,
+                "lastLoginAt": "2024-01-15T10:00:00Z",
+                "lastLoginIp": "192.168.1.100",
+                "createdAt": "2024-01-01T00:00:00Z",
+                "updatedAt": "2024-01-15T10:00:00Z"
+              }
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.GetAllUsers">
+            <summary>
+            Obtiene todos los usuarios del sistema (solo para administradores).
+            </summary>
+            <returns>Lista de todos los usuarios del sistema</returns>
+            <response code="200">Usuarios obtenidos exitosamente - Retorna lista completa</response>
+            <response code="401">No autorizado - Token inválido</response>
+            <response code="403">Acceso denegado - Se requiere rol Admin</response>
+            <response code="500">Error interno del servidor</response>
+            <remarks>
+            Este endpoint está restringido a administradores y proporciona:
+            
+            **Información retornada:**
+            - Lista completa de usuarios del sistema
+            - Información de auditoría de cada usuario
+            - Estado de cuentas (activas/inactivas/bloqueadas)
+            - Roles y permisos de cada usuario
+            - Metadatos de creación y modificación
+            
+            **Utilización:**
+            - Gestión administrativa de usuarios
+            - Auditoría de actividad del sistema
+            - Control de acceso y permisos
+            - Análisis de uso del sistema
+            
+            **Respuesta exitosa:**
+            ```json
+            {
+              "success": true,
+              "message": "Usuarios obtenidos exitosamente",
+              "data": [
+                {
+                  "id": 1,
+                  "username": "admin",
+                  "email": "admin@cafelab.com",
+                  "fullName": "Administrador",
+                  "role": "Admin",
+                  "isActive": true,
+                  "lastLoginAt": "2024-01-15T10:00:00Z",
+                  "createdAt": "2024-01-01T00:00:00Z"
+                },
+                {
+                  "id": 2,
+                  "username": "usuario1",
+                  "email": "usuario1@cafelab.com",
+                  "fullName": "Usuario Uno",
+                  "role": "User",
+                  "isActive": true,
+                  "lastLoginAt": "2024-01-14T15:30:00Z",
+                  "createdAt": "2024-01-02T00:00:00Z"
+                }
+              ]
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.GetClientIpAddress">
+            <summary>
+            Obtiene la dirección IP del cliente que realiza la petición.
+            </summary>
+            <returns>Dirección IP del cliente</returns>
+            <remarks>
+            Este método extrae la IP real del cliente considerando:
+            - Headers de proxy (X-Forwarded-For)
+            - Conexión directa
+            - Casos especiales de red
+            
+            Utilizado para auditoría de seguridad y logging.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Controllers.AuthController.GetCurrentUserId">
+            <summary>
+            Obtiene el ID del usuario actual desde el token JWT.
+            </summary>
+            <returns>ID del usuario autenticado</returns>
+            <exception cref="T:System.InvalidOperationException">Se lanza cuando no se puede obtener el ID del usuario</exception>
+            <remarks>
+            Este método extrae el ID del usuario del claim NameIdentifier del token JWT.
+            Se utiliza para identificar al usuario en operaciones que requieren autenticación.
+            
+            El ID se utiliza para:
+            - Auditoría de acciones
+            - Control de acceso
+            - Personalización de respuestas
+            - Logging de operaciones
+            </remarks>
+        </member>
+        <member name="T:CafeLab.API.Domain.Entities.Calibration">
+            <summary>
+            Representa una calibración de equipos o procesos en el laboratorio de café.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.Id">
+            <summary>
+            Identificador único de la calibración.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.Name">
+            <summary>
+            Nombre de la calibración.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.Description">
+            <summary>
+            Descripción detallada de la calibración.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.CalibrationDate">
+            <summary>
+            Fecha de la calibración.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.Result">
+            <summary>
+            Resultado de la calibración.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.Status">
+            <summary>
+            Estado de la calibración (Pendiente, En Proceso, Completada, Fallida).
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.Type">
+            <summary>
+            Tipo de calibración (Equipo, Proceso, Método).
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.Notes">
+            <summary>
+            Notas adicionales sobre la calibración.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.CreatedAt">
+            <summary>
+            Fecha de creación del registro.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.UpdatedAt">
+            <summary>
+            Fecha de la última modificación.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Calibration.IsActive">
+            <summary>
+            Indica si la calibración está activa.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Calibration.#ctor">
+            <summary>
+            Constructor por defecto.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Calibration.#ctor(System.String,System.String,System.DateTime,System.String,System.String)">
+            <summary>
+            Constructor con parámetros para crear una calibración.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Calibration.Update(System.String,System.String,System.DateTime,System.String,System.String,System.String,System.String)">
+            <summary>
+            Actualiza los datos de la calibración.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Calibration.UpdateStatus(System.String)">
+            <summary>
+            Actualiza el estado de la calibración.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Calibration.Deactivate">
+            <summary>
+            Desactiva la calibración.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Calibration.Activate">
+            <summary>
+            Activa la calibración.
+            </summary>
+        </member>
         <member name="T:CafeLab.API.Domain.Entities.Defect">
             <summary>
             Representa un defecto encontrado en una evaluación sensorial de café.
             Esta entidad define los defectos que pueden afectar la calidad del café.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.Id">
+            <summary>
+            Identificador único del defecto.
             </summary>
         </member>
         <member name="P:CafeLab.API.Domain.Entities.Defect.Name">
@@ -35,14 +751,44 @@
             Solución recomendada para el defecto.
             </summary>
         </member>
-        <member name="P:CafeLab.API.Domain.Entities.Defect.CreatedBy">
+        <member name="P:CafeLab.API.Domain.Entities.Defect.CreatedAt">
             <summary>
-            Usuario que creó el defecto.
+            Fecha de creación del defecto.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.UpdatedAt">
+            <summary>
+            Fecha de la última modificación.
+            </summary>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.Defect.IsActive">
+            <summary>
+            Indica si el defecto está activo.
             </summary>
         </member>
         <member name="M:CafeLab.API.Domain.Entities.Defect.#ctor">
             <summary>
-            Constructor que inicializa las colecciones.
+            Constructor que inicializa las propiedades.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Defect.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Constructor con parámetros para crear un defecto.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Defect.Update(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Actualiza los datos del defecto.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Defect.Deactivate">
+            <summary>
+            Desactiva el defecto.
+            </summary>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.Defect.Activate">
+            <summary>
+            Activa el defecto.
             </summary>
         </member>
         <member name="T:CafeLab.API.Domain.Entities.TastingPattern">
@@ -78,44 +824,648 @@
         </member>
         <member name="T:CafeLab.API.Domain.Entities.User">
             <summary>
-            Representa un usuario en el sistema.
-            Esta entidad es el agregado raíz para la gestión de usuarios.
+            Representa un usuario del sistema de gestión de defectos y calibraciones.
+            Esta entidad es el agregado raíz para la gestión de usuarios en el contexto
+            de defectos y calibraciones del café, siguiendo las mejores prácticas del
+            Learning Center Platform.
             </summary>
+            <remarks>
+            La entidad User maneja la autenticación y autorización para los módulos
+            de defectos y calibraciones. Incluye auditoría completa, gestión de
+            sesiones y control de acceso basado en roles.
+            </remarks>
         </member>
         <member name="P:CafeLab.API.Domain.Entities.User.Username">
             <summary>
-            Nombre de usuario único para el inicio de sesión.
+            Nombre de usuario único para autenticación en el sistema.
+            Utilizado para el login y identificación del usuario.
             </summary>
+            <remarks>
+            Debe ser único en el sistema y no puede estar vacío.
+            Máximo 50 caracteres para evitar problemas de rendimiento.
+            </remarks>
         </member>
         <member name="P:CafeLab.API.Domain.Entities.User.Email">
             <summary>
-            Correo electrónico del usuario.
+            Email único del usuario para comunicación y recuperación de cuenta.
             </summary>
-        </member>
-        <member name="P:CafeLab.API.Domain.Entities.User.PasswordHash">
-            <summary>
-            Contraseña hasheada del usuario.
-            </summary>
+            <remarks>
+            Debe ser un email válido y único en el sistema.
+            Utilizado para notificaciones sobre defectos y calibraciones.
+            </remarks>
         </member>
         <member name="P:CafeLab.API.Domain.Entities.User.FullName">
             <summary>
-            Nombre completo del usuario.
+            Nombre completo del usuario para identificación en reportes.
             </summary>
+            <remarks>
+            Utilizado en auditoría de defectos y calibraciones para
+            identificar quién realizó cada acción.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.PasswordHash">
+            <summary>
+            Hash de la contraseña utilizando BCrypt para máxima seguridad.
+            </summary>
+            <remarks>
+            La contraseña se hashea con BCrypt usando un factor de costo de 12.
+            Nunca se almacena en texto plano por seguridad.
+            </remarks>
         </member>
         <member name="P:CafeLab.API.Domain.Entities.User.Role">
             <summary>
-            Rol del usuario en el sistema (por ejemplo: Admin, Catador, Usuario).
+            Rol del usuario en el sistema de defectos y calibraciones.
             </summary>
+            <remarks>
+            Roles disponibles:
+            - "Admin": Acceso completo a todos los módulos
+            - "User": Acceso básico a defectos y calibraciones
+            - "Technician": Acceso especializado para calibraciones
+            </remarks>
         </member>
         <member name="P:CafeLab.API.Domain.Entities.User.IsActive">
             <summary>
-            Indica si el usuario está activo en el sistema.
+            Indica si el usuario está activo y puede acceder al sistema.
             </summary>
+            <remarks>
+            Los usuarios inactivos no pueden crear o modificar defectos
+            ni realizar calibraciones. Útil para desactivar cuentas
+            temporalmente sin eliminarlas.
+            </remarks>
         </member>
-        <member name="P:CafeLab.API.Domain.Entities.User.LastLoginDate">
+        <member name="P:CafeLab.API.Domain.Entities.User.FailedLoginAttempts">
             <summary>
-            Fecha del último inicio de sesión del usuario.
+            Número de intentos fallidos de login consecutivos.
             </summary>
+            <remarks>
+            Se incrementa con cada intento fallido y se resetea en login exitoso.
+            Después de 5 intentos fallidos, la cuenta se bloquea por 30 minutos.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.LockoutEnd">
+            <summary>
+            Fecha hasta la cual la cuenta está bloqueada por intentos fallidos.
+            </summary>
+            <remarks>
+            Null cuando la cuenta no está bloqueada.
+            Se establece automáticamente después de 5 intentos fallidos.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.LastLoginAt">
+            <summary>
+            Fecha del último login exitoso del usuario.
+            </summary>
+            <remarks>
+            Utilizado para auditoría y análisis de actividad del usuario
+            en el sistema de defectos y calibraciones.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.LastLoginIp">
+            <summary>
+            Dirección IP del último login exitoso.
+            </summary>
+            <remarks>
+            Utilizado para auditoría de seguridad y detección de
+            accesos no autorizados al sistema.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.RefreshToken">
+            <summary>
+            Token de refresh para renovación automática de sesiones.
+            </summary>
+            <remarks>
+            Permite renovar el token de acceso sin requerir login.
+            Se revoca automáticamente en logout o expiración.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.RefreshTokenExpiry">
+            <summary>
+            Fecha de expiración del refresh token.
+            </summary>
+            <remarks>
+            Por defecto 7 días desde la creación.
+            Después de esta fecha, el usuario debe hacer login nuevamente.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.CreatedBy">
+            <summary>
+            Usuario que creó este registro en el sistema.
+            </summary>
+            <remarks>
+            Utilizado para auditoría de creación de usuarios.
+            Null para usuarios creados por el sistema o migraciones.
+            </remarks>
+        </member>
+        <member name="P:CafeLab.API.Domain.Entities.User.UpdatedBy">
+            <summary>
+            Usuario que modificó por última vez este registro.
+            </summary>
+            <remarks>
+            Utilizado para auditoría de modificaciones de usuarios.
+            Se actualiza automáticamente en cada modificación.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.#ctor">
+            <summary>
+            Constructor por defecto requerido por Entity Framework.
+            </summary>
+            <remarks>
+            Inicializa el usuario con valores por defecto seguros.
+            Establece la fecha de creación y activa la cuenta.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Constructor con parámetros para crear un usuario con datos específicos.
+            </summary>
+            <param name="username">Nombre de usuario único</param>
+            <param name="email">Email único del usuario</param>
+            <param name="fullName">Nombre completo del usuario</param>
+            <param name="passwordHash">Hash de la contraseña</param>
+            <param name="role">Rol del usuario (por defecto "User")</param>
+            <exception cref="T:System.ArgumentException">Se lanza cuando los parámetros son inválidos</exception>
+            <remarks>
+            Valida todos los parámetros antes de crear el usuario.
+            Establece automáticamente la fecha de creación y activa la cuenta.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.Update(System.String,System.String,System.String)">
+            <summary>
+            Actualiza los datos básicos del usuario.
+            </summary>
+            <param name="email">Nuevo email del usuario</param>
+            <param name="fullName">Nuevo nombre completo</param>
+            <param name="updatedBy">Usuario que realiza la actualización</param>
+            <remarks>
+            Solo actualiza los campos proporcionados que no estén vacíos.
+            Registra automáticamente la fecha de actualización y el usuario modificador.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.UpdatePassword(System.String,System.String)">
+            <summary>
+            Actualiza la contraseña del usuario con un nuevo hash.
+            </summary>
+            <param name="newPasswordHash">Nuevo hash de la contraseña</param>
+            <param name="updatedBy">Usuario que realiza la actualización</param>
+            <exception cref="T:System.ArgumentException">Se lanza cuando el hash está vacío</exception>
+            <remarks>
+            Utilizado para cambio de contraseña y reset de contraseña.
+            Registra la auditoría de la modificación.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.RecordSuccessfulLogin(System.String)">
+            <summary>
+            Registra un intento de login exitoso del usuario.
+            </summary>
+            <param name="ipAddress">Dirección IP del login</param>
+            <remarks>
+            Resetea los intentos fallidos y desbloquea la cuenta si estaba bloqueada.
+            Actualiza la fecha del último login y la IP.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.RecordFailedLogin">
+            <summary>
+            Registra un intento de login fallido del usuario.
+            </summary>
+            <remarks>
+            Incrementa el contador de intentos fallidos.
+            Bloquea la cuenta automáticamente después de 5 intentos fallidos
+            por un período de 30 minutos.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.IsLocked">
+            <summary>
+            Verifica si la cuenta del usuario está bloqueada.
+            </summary>
+            <returns>True si la cuenta está bloqueada, False en caso contrario</returns>
+            <remarks>
+            Una cuenta está bloqueada si tiene una fecha de bloqueo futura.
+            Se utiliza para prevenir ataques de fuerza bruta.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.Unlock">
+            <summary>
+            Desbloquea la cuenta del usuario manualmente.
+            </summary>
+            <remarks>
+            Resetea los intentos fallidos y elimina la fecha de bloqueo.
+            Utilizado por administradores para desbloquear cuentas.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.Deactivate(System.String)">
+            <summary>
+            Desactiva el usuario en el sistema.
+            </summary>
+            <param name="updatedBy">Usuario que realiza la desactivación</param>
+            <remarks>
+            Un usuario desactivado no puede acceder al sistema ni realizar
+            operaciones en defectos o calibraciones.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.Activate(System.String)">
+            <summary>
+            Activa el usuario en el sistema.
+            </summary>
+            <param name="updatedBy">Usuario que realiza la activación</param>
+            <remarks>
+            Permite que el usuario vuelva a acceder al sistema y realizar
+            operaciones en defectos y calibraciones.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.UpdateRefreshToken(System.String,System.DateTime)">
+            <summary>
+            Actualiza el refresh token del usuario.
+            </summary>
+            <param name="refreshToken">Nuevo refresh token</param>
+            <param name="expiry">Fecha de expiración del token</param>
+            <remarks>
+            Utilizado para renovar sesiones automáticamente.
+            El token anterior se invalida al crear uno nuevo.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.RevokeRefreshToken">
+            <summary>
+            Revoca el refresh token del usuario.
+            </summary>
+            <remarks>
+            Utilizado en logout para invalidar la sesión.
+            El usuario deberá hacer login nuevamente para obtener un nuevo token.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.IsRefreshTokenValid">
+            <summary>
+            Verifica si el refresh token del usuario es válido.
+            </summary>
+            <returns>True si el token es válido, False en caso contrario</returns>
+            <remarks>
+            Un token es válido si existe, no está vacío y no ha expirado.
+            Se utiliza para determinar si se puede renovar la sesión automáticamente.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.HasRole(System.String)">
+            <summary>
+            Verifica si el usuario tiene un rol específico.
+            </summary>
+            <param name="role">Rol a verificar</param>
+            <returns>True si el usuario tiene el rol, False en caso contrario</returns>
+            <remarks>
+            La comparación es case-insensitive para mayor flexibilidad.
+            Utilizado para control de acceso en defectos y calibraciones.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.IsAdmin">
+            <summary>
+            Verifica si el usuario es administrador del sistema.
+            </summary>
+            <returns>True si el usuario es admin, False en caso contrario</returns>
+            <remarks>
+            Los administradores tienen acceso completo a todos los módulos
+            de defectos y calibraciones, incluyendo gestión de usuarios.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.IsTechnician">
+            <summary>
+            Verifica si el usuario es técnico especializado.
+            </summary>
+            <returns>True si el usuario es técnico, False en caso contrario</returns>
+            <remarks>
+            Los técnicos tienen acceso especializado para calibraciones
+            y pueden realizar operaciones técnicas avanzadas.
+            </remarks>
+        </member>
+        <member name="M:CafeLab.API.Domain.Entities.User.GetDisplayName">
+            <summary>
+            Obtiene el nombre para mostrar del usuario.
+            </summary>
+            <returns>Nombre completo o username como fallback</returns>
+            <remarks>
+            Utilizado en interfaces de usuario para mostrar la identidad
+            del usuario de forma amigable.
+            </remarks>
+        </member>
+        <member name="T:CafeLab.API.Domain.Interfaces.ICalibrationRepository">
+            Interfaz para el repositorio de calibraciones
+            
+            Define las operaciones específicas para la gestión de calibraciones
+            extendiendo la funcionalidad básica del IRepository genérico.
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetByStatusAsync(System.String)">
+            Obtiene calibraciones por estado
+            
+            @param status Estado de la calibración a filtrar
+            @returns Lista de calibraciones con el estado especificado
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetByEquipmentTypeAsync(System.String)">
+            Obtiene calibraciones por tipo
+            
+            @param equipmentType Tipo de calibración a filtrar
+            @returns Lista de calibraciones del tipo especificado
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetByTechnicianAsync(System.Int32)">
+            Obtiene calibraciones activas
+            
+            @param technicianId ID del técnico (no usado en esta implementación)
+            @returns Lista de calibraciones activas
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetUpcomingExpirationsAsync(System.Int32)">
+            Obtiene calibraciones próximas a vencer (basado en fecha de calibración)
+            
+            @param daysThreshold Días de anticipación para considerar próximas a vencer
+            @returns Lista de calibraciones que vencen en los próximos días
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetExpiredCalibrationsAsync">
+            Obtiene calibraciones vencidas (basado en fecha de calibración)
+            
+            @returns Lista de calibraciones que ya han vencido
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetByDateRangeAsync(System.DateTime,System.DateTime)">
+            Obtiene calibraciones por rango de fechas
+            
+            @param startDate Fecha de inicio
+            @param endDate Fecha de fin
+            @returns Lista de calibraciones en el rango de fechas especificado
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetCalibrationStatisticsAsync">
+            Obtiene estadísticas de calibraciones
+            
+            @returns Estadísticas agregadas de calibraciones
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.ICalibrationRepository.GetBySerialNumberAsync(System.String)">
+            Obtiene calibraciones por nombre
+            
+            @param serialNumber Nombre de la calibración (renombrado para mantener compatibilidad)
+            @returns Lista de calibraciones con el nombre especificado
+        </member>
+        <member name="T:CafeLab.API.Domain.Interfaces.IDefectRepository">
+            Interfaz para el repositorio de defectos
+            
+            Define las operaciones específicas para la gestión de defectos
+            extendiendo la funcionalidad básica del IRepository genérico.
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IDefectRepository.GetByStatusAsync(System.String)">
+            Obtiene defectos por categoría
+            
+            @param category Categoría del defecto a filtrar
+            @returns Lista de defectos de la categoría especificada
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IDefectRepository.GetByTypeAsync(System.String)">
+            Obtiene defectos por severidad
+            
+            @param severity Severidad del defecto a filtrar
+            @returns Lista de defectos con la severidad especificada
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IDefectRepository.GetByReportedByAsync(System.Int32)">
+            Obtiene defectos activos
+            
+            @param userId ID del usuario (no usado en esta implementación)
+            @returns Lista de defectos activos
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IDefectRepository.GetByDateRangeAsync(System.DateTime,System.DateTime)">
+            Obtiene defectos por rango de fechas
+            
+            @param startDate Fecha de inicio
+            @param endDate Fecha de fin
+            @returns Lista de defectos en el rango de fechas especificado
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IDefectRepository.GetCriticalDefectsAsync">
+            Obtiene defectos de alta severidad
+            
+            @returns Lista de defectos con severidad alta
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IDefectRepository.GetDefectStatisticsAsync">
+            Obtiene estadísticas de defectos
+            
+            @returns Estadísticas agregadas de defectos
+        </member>
+        <member name="T:CafeLab.API.Domain.Interfaces.IUnitOfWork">
+            Interfaz para el patrón Unit of Work
+            
+            Define el contrato para gestionar transacciones de base de datos
+            y asegurar la consistencia de los datos.
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUnitOfWork.CompleteAsync">
+            Completa la transacción actual
+            
+            @returns Task que representa la operación asíncrona
+        </member>
+        <member name="T:CafeLab.API.Domain.Interfaces.IUserRepository">
+            Interfaz para el repositorio de usuarios
+            
+            Define las operaciones específicas para la gestión de usuarios
+            extendiendo la funcionalidad básica del IRepository genérico.
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUserRepository.GetByUsernameAsync(System.String)">
+            Obtiene un usuario por nombre de usuario
+            
+            @param username Nombre de usuario a buscar
+            @returns Usuario encontrado o null si no existe
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUserRepository.GetByEmailAsync(System.String)">
+            Obtiene un usuario por email
+            
+            @param email Email del usuario a buscar
+            @returns Usuario encontrado o null si no existe
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUserRepository.ExistsByUsernameAsync(System.String)">
+            Verifica si existe un usuario con el nombre de usuario especificado
+            
+            @param username Nombre de usuario a verificar
+            @returns True si existe, false en caso contrario
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUserRepository.ExistsByEmailAsync(System.String)">
+            Verifica si existe un usuario con el email especificado
+            
+            @param email Email a verificar
+            @returns True si existe, false en caso contrario
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUserRepository.GetByRoleAsync(System.String)">
+            Obtiene usuarios por rol
+            
+            @param role Rol de los usuarios a buscar
+            @returns Lista de usuarios con el rol especificado
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUserRepository.GetActiveUsersAsync">
+            Obtiene usuarios activos
+            
+            @returns Lista de usuarios activos
+        </member>
+        <member name="M:CafeLab.API.Domain.Interfaces.IUserRepository.GetLockedUsersAsync">
+            Obtiene usuarios bloqueados
+            
+            @returns Lista de usuarios bloqueados
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository">
+            Repositorio para la entidad Calibration
+            
+            Este repositorio implementa las operaciones de persistencia específicas
+            para la entidad Calibration, extendiendo la funcionalidad del BaseRepository.
+            
+            Características implementadas:
+            - Operaciones CRUD básicas heredadas del BaseRepository
+            - Consultas específicas para calibraciones
+            - Filtrado por estado y tipo
+            - Paginación y ordenamiento
+            - Consultas de calibraciones por fecha
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetByStatusAsync(System.String)">
+            Obtiene calibraciones por estado
+            
+            @param status Estado de la calibración a filtrar
+            @returns Lista de calibraciones con el estado especificado
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetByEquipmentTypeAsync(System.String)">
+            Obtiene calibraciones por tipo
+            
+            @param equipmentType Tipo de calibración a filtrar
+            @returns Lista de calibraciones del tipo especificado
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetByTechnicianAsync(System.Int32)">
+            Obtiene calibraciones activas
+            
+            @param technicianId ID del técnico (no usado en esta implementación)
+            @returns Lista de calibraciones activas
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetUpcomingExpirationsAsync(System.Int32)">
+            Obtiene calibraciones próximas a vencer (basado en fecha de calibración)
+            
+            @param daysThreshold Días de anticipación para considerar próximas a vencer
+            @returns Lista de calibraciones que vencen en los próximos días
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetExpiredCalibrationsAsync">
+            Obtiene calibraciones vencidas (basado en fecha de calibración)
+            
+            @returns Lista de calibraciones que ya han vencido
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetByDateRangeAsync(System.DateTime,System.DateTime)">
+            Obtiene calibraciones por rango de fechas
+            
+            @param startDate Fecha de inicio
+            @param endDate Fecha de fin
+            @returns Lista de calibraciones en el rango de fechas especificado
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetCalibrationStatisticsAsync">
+            Obtiene estadísticas de calibraciones
+            
+            @returns Estadísticas agregadas de calibraciones
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.GetBySerialNumberAsync(System.String)">
+            Obtiene calibraciones por nombre
+            
+            @param serialNumber Nombre de la calibración (renombrado para mantener compatibilidad)
+            @returns Lista de calibraciones con el nombre especificado
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.CalibrationRepository.SaveChangesAsync">
+            Guarda los cambios en la base de datos
+            
+            @returns Número de entidades afectadas
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository">
+            Repositorio para la entidad Defect
+            
+            Este repositorio implementa las operaciones de persistencia específicas
+            para la entidad Defect, extendiendo la funcionalidad del BaseRepository.
+            
+            Características implementadas:
+            - Operaciones CRUD básicas heredadas del BaseRepository
+            - Consultas específicas para defectos
+            - Filtrado por categoría y severidad
+            - Paginación y ordenamiento
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository.GetByStatusAsync(System.String)">
+            Obtiene defectos por categoría
+            
+            @param category Categoría del defecto a filtrar
+            @returns Lista de defectos de la categoría especificada
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository.GetByTypeAsync(System.String)">
+            Obtiene defectos por severidad
+            
+            @param severity Severidad del defecto a filtrar
+            @returns Lista de defectos con la severidad especificada
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository.GetByReportedByAsync(System.Int32)">
+            Obtiene defectos activos
+            
+            @returns Lista de defectos activos
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository.GetByDateRangeAsync(System.DateTime,System.DateTime)">
+            Obtiene defectos por rango de fechas
+            
+            @param startDate Fecha de inicio
+            @param endDate Fecha de fin
+            @returns Lista de defectos en el rango de fechas especificado
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository.GetCriticalDefectsAsync">
+            Obtiene defectos de alta severidad
+            
+            @returns Lista de defectos con severidad alta
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository.GetDefectStatisticsAsync">
+            Obtiene estadísticas de defectos
+            
+            @returns Estadísticas agregadas de defectos
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.DefectRepository.SaveChangesAsync">
+            Guarda los cambios en la base de datos
+            
+            @returns Número de entidades afectadas
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository">
+            Repositorio para la entidad User
+            
+            Este repositorio implementa las operaciones de persistencia específicas
+            para la entidad User, extendiendo la funcionalidad del BaseRepository.
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository.GetByUsernameAsync(System.String)">
+            Obtiene un usuario por nombre de usuario
+            
+            @param username Nombre de usuario a buscar
+            @returns Usuario encontrado o null si no existe
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository.GetByEmailAsync(System.String)">
+            Obtiene un usuario por email
+            
+            @param email Email del usuario a buscar
+            @returns Usuario encontrado o null si no existe
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository.ExistsByUsernameAsync(System.String)">
+            Verifica si existe un usuario con el nombre de usuario especificado
+            
+            @param username Nombre de usuario a verificar
+            @returns True si existe, false en caso contrario
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository.ExistsByEmailAsync(System.String)">
+            Verifica si existe un usuario con el email especificado
+            
+            @param email Email a verificar
+            @returns True si existe, false en caso contrario
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository.GetByRoleAsync(System.String)">
+            Obtiene usuarios por rol
+            
+            @param role Rol de los usuarios a buscar
+            @returns Lista de usuarios con el rol especificado
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository.GetActiveUsersAsync">
+            Obtiene usuarios activos
+            
+            @returns Lista de usuarios activos
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.Repositories.UserRepository.GetLockedUsersAsync">
+            Obtiene usuarios bloqueados
+            
+            @returns Lista de usuarios bloqueados
+        </member>
+        <member name="T:CafeLab.API.Infrastructure.Persistence.EFC.UnitOfWork">
+            Implementación del patrón Unit of Work
+            
+            Gestiona las transacciones de base de datos y asegura
+            la consistencia de los datos en operaciones complejas.
+        </member>
+        <member name="M:CafeLab.API.Infrastructure.Persistence.EFC.UnitOfWork.CompleteAsync">
+            Completa la transacción actual
+            
+            @returns Task que representa la operación asíncrona
         </member>
         <member name="T:CafeLab.API.Infrastructure.Swagger.AddResponseHeadersFilter">
             <summary>

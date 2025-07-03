@@ -1,4 +1,4 @@
-using CafeLab.API.Domain.Repositories;
+using CafeLab.API.Domain.Interfaces;
 using CafeLab.API.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +11,7 @@ namespace CafeLab.API.Infrastructure.Persistence.EFC.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _context;
+        protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
         public BaseRepository(ApplicationDbContext context)
@@ -55,6 +55,11 @@ namespace CafeLab.API.Infrastructure.Persistence.EFC.Repositories
         public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.AnyAsync(predicate);
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 } 

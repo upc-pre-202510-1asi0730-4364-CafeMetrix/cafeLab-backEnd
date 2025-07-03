@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CafeLab.API")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute(" ")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ccad69b7d9b107945ab2cb1978845638e27537e3")]
 [assembly: System.Reflection.AssemblyProductAttribute("CafeLab.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CafeLab.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
