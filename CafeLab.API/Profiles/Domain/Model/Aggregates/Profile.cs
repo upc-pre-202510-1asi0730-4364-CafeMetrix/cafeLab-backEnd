@@ -13,7 +13,7 @@ namespace CafeLab.API.Profiles.Domain.Model.Aggregates;
 
 public partial class Profile
 {
-    public string Id { get; }
+    public string Id { get; set; }
     
     public string Name { get; private set; }
     public EmailAddress Email { get; private set; }
@@ -31,11 +31,13 @@ public partial class Profile
 
     public Profile()
     {
+        Id = Guid.NewGuid().ToString();
         Email = new EmailAddress();
     }
     
     public Profile(string name , string email, string password, string role, string cafeteriaName, string experience, string profilePicture, string paymentMethod, bool isFirstLogin, string plan, bool hasPlan)
     {
+        Id = Guid.NewGuid().ToString();
         Name = name;
         Email = new EmailAddress(email);
         Password = password;
@@ -51,6 +53,7 @@ public partial class Profile
 
     public Profile(CreateProfileCommand command)
     {
+        Id = Guid.NewGuid().ToString();
         Name = command.Name;
         Email = new EmailAddress(command.Email);
         Password = command.Password;

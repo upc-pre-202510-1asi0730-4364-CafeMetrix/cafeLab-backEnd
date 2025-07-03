@@ -45,7 +45,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         // Profile Context
         builder.Entity<Profile>().HasKey(p => p.Id);
-        builder.Entity<Profile>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Profile>().Property(p => p.Id).IsRequired();
         builder.Entity<Profile>().Property(p => p.Name).IsRequired().HasMaxLength(40);
         builder.Entity<Profile>().Property(p => p.Password).IsRequired().HasMaxLength(40);
         builder.Entity<Profile>().Property(p => p.Role).IsRequired().HasMaxLength(16);

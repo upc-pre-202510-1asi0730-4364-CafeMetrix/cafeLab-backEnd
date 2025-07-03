@@ -32,6 +32,8 @@ public class ProfileCommandService(
         } catch (Exception e)
         {
             // Log error
+            Console.WriteLine($"Error creating profile: {e.Message}");
+            Console.WriteLine($"Stack trace: {e.StackTrace}");
             return null;
         }
     }

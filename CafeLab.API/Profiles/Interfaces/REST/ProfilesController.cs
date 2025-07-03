@@ -14,7 +14,7 @@ namespace CafeLab.API.Profiles.Interfaces.REST;
 [SwaggerTag("Available Profile Endpoints.")]
 public class ProfilesController(IProfileCommandService profileCommandService, IProfileQueryService profileQueryService) : ControllerBase
 {
-    [HttpGet("{profileId:int}")]
+    [HttpGet("{profileId}")]
     [SwaggerOperation("Get Profile by Id", "Get a profile by its unique identifier.", OperationId = "GetProfileById")]
     [SwaggerResponse(200, "The profile was found and returned.", typeof(ProfileResource))]
     [SwaggerResponse(404, "The profile was not found.")]
@@ -33,11 +33,20 @@ public class ProfilesController(IProfileCommandService profileCommandService, IP
     [SwaggerResponse(400, "The profile was not created.")]
     public async Task<IActionResult> CreateProfile(CreateProfileResource resource)
     {
-        var createProfileCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
-        var profile = await profileCommandService.Handle(createProfileCommand);
-        if (profile is null) return BadRequest();
-        var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
-        return CreatedAtAction(nameof(GetProfileById), new { profileId = profile.Id }, profileResource);
+        try
+        {
+            var createProfileCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
+            var profile = await profileCommandService.Handle(createProfileCommand);
+            if (profile is null) return BadRequest("Failed to create profile");
+            var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
+            return CreatedAtAction(nameof(GetProfileById), new { profileId = profile.Id }, profileResource);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in CreateProfile: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            return StatusCode(500, "Internal server error occurred while creating profile");
+        }
     }
 
     [HttpGet]
