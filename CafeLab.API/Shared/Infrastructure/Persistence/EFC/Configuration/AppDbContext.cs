@@ -1,5 +1,6 @@
 //aqui se llaman aggregates y entities :p
 using CafeLab.API.Profiles.Domain.Model.Aggregates;
+using CafeLab.API.CoffeeProduction.Domain.Model.Aggregates;
 
 //ESTO ES OBLIGATORIO -------------------------------------------------------------
 using CafeLab.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
@@ -65,6 +66,63 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 e.Property(a => a.Address).HasColumnName("EmailAddress").IsRequired().HasMaxLength(40);
             });
 
+        // CoffeeProduction Context - Supplier
+        builder.Entity<Supplier>().HasKey(s => s.Id);
+        builder.Entity<Supplier>().Property(s => s.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Supplier>().Property(s => s.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<Supplier>().Property(s => s.Email).IsRequired().HasMaxLength(100);
+        builder.Entity<Supplier>().Property(s => s.Phone).HasMaxLength(20);
+        builder.Entity<Supplier>().Property(s => s.Location).HasMaxLength(100);
+        builder.Entity<Supplier>().Property(s => s.UserId).IsRequired();
+        builder.Entity<Supplier>().Property(s => s.Specialties).HasConversion(
+            v => string.Join(",", v),
+            v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
+        );
+
+        // CoffeeProduction Context - CoffeeLot
+        builder.Entity<CoffeeLot>().HasKey(cl => cl.Id);
+        builder.Entity<CoffeeLot>().Property(cl => cl.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<CoffeeLot>().Property(cl => cl.LotName).IsRequired().HasMaxLength(100);
+        builder.Entity<CoffeeLot>().Property(cl => cl.CoffeeType).IsRequired().HasMaxLength(50);
+        builder.Entity<CoffeeLot>().Property(cl => cl.ProcessingMethod).IsRequired().HasMaxLength(50);
+        builder.Entity<CoffeeLot>().Property(cl => cl.Altitude).IsRequired();
+        builder.Entity<CoffeeLot>().Property(cl => cl.Weight).IsRequired().HasPrecision(10, 2);
+        builder.Entity<CoffeeLot>().Property(cl => cl.Certifications).HasMaxLength(500);
+        builder.Entity<CoffeeLot>().Property(cl => cl.Origin).IsRequired().HasMaxLength(100);
+        builder.Entity<CoffeeLot>().Property(cl => cl.SupplierId).IsRequired();
+        builder.Entity<CoffeeLot>().Property(cl => cl.UserId).IsRequired();
+        builder.Entity<CoffeeLot>().Property(cl => cl.Status).HasMaxLength(20);
+
+        // Relationship: CoffeeLot -> Supplier
+        builder.Entity<CoffeeLot>()
+            .HasOne(cl => cl.Supplier)
+            .WithMany()
+            .HasForeignKey(cl => cl.SupplierId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // CoffeeProduction Context - RoastProfile
+        builder.Entity<RoastProfile>().HasKey(rp => rp.Id);
+        builder.Entity<RoastProfile>().Property(rp => rp.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<RoastProfile>().Property(rp => rp.ProfileName).IsRequired().HasMaxLength(100);
+        builder.Entity<RoastProfile>().Property(rp => rp.RoastType).IsRequired().HasMaxLength(50);
+        builder.Entity<RoastProfile>().Property(rp => rp.Duration).IsRequired();
+        builder.Entity<RoastProfile>().Property(rp => rp.CoffeeLotId).IsRequired();
+        builder.Entity<RoastProfile>().Property(rp => rp.TempStart).IsRequired();
+        builder.Entity<RoastProfile>().Property(rp => rp.TempEnd).IsRequired();
+        builder.Entity<RoastProfile>().Property(rp => rp.IsFavorite).IsRequired();
+        builder.Entity<RoastProfile>().Property(rp => rp.UserId).IsRequired();
+        builder.Entity<RoastProfile>().Property(rp => rp.CreatedAt).IsRequired();
+        builder.Entity<RoastProfile>().Property(rp => rp.UpdatedAt).IsRequired();
+        builder.Entity<RoastProfile>()
+            .HasOne(rp => rp.CoffeeLot)
+            .WithMany()
+            .HasForeignKey(rp => rp.CoffeeLotId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.UseSnakeCaseNamingConvention();
     }
+
+    public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<CoffeeLot> CoffeeLots { get; set; }
+    public DbSet<RoastProfile> RoastProfiles { get; set; }
 }

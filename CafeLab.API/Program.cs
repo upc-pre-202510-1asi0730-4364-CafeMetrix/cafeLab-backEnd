@@ -4,6 +4,12 @@ using CafeLab.API.Profiles.Domain.Repositories;
 using CafeLab.API.Profiles.Domain.Services;
 using CafeLab.API.Profiles.Infrastructure.Persistance.EFC.Repositories;
 using CafeLab.API.Shared.Domain.Repositories;
+using CafeLab.API.CoffeeProduction.Domain.Services;
+using CafeLab.API.CoffeeProduction.Application.Internal.CommandServices;
+using CafeLab.API.CoffeeProduction.Application.Internal.QueryServices;
+using CafeLab.API.CoffeeProduction.Domain.Repositories;
+using CafeLab.API.CoffeeProduction.Infrastructure.Persistance.EFC.Repositories;
+using CafeLab.API.CoffeeProduction.Interfaces.REST.Transform;
 
 //builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 using CafeLab.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
@@ -59,10 +65,28 @@ builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
 
+// CoffeeProduction Bounded Context
+builder.Services.AddScoped<ISupplierCommandService, SupplierCommandService>();
+builder.Services.AddScoped<ISupplierQueryService, SupplierQueryService>();
+builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+
+// CoffeeLot dependencies
+builder.Services.AddScoped<ICoffeeLotCommandService, CoffeeLotCommandService>();
+builder.Services.AddScoped<ICoffeeLotQueryService, CoffeeLotQueryService>();
+builder.Services.AddScoped<ICoffeeLotRepository, CoffeeLotRepository>();
+builder.Services.AddScoped<CoffeeLotResourceFromEntityAssembler>();
+builder.Services.AddScoped<CreateCoffeeLotCommandFromResourceAssembler>();
+
 // IAM Bounded Context
 
 // TokenSettings Configuration
 
+// RoastProfile dependencies
+builder.Services.AddScoped<IRoastProfileCommandService, RoastProfileCommandService>();
+builder.Services.AddScoped<IRoastProfileQueryService, RoastProfileQueryService>();
+builder.Services.AddScoped<IRoastProfileRepository, RoastProfileRepository>();
+builder.Services.AddScoped<RoastProfileResourceFromEntityAssembler>();
+builder.Services.AddScoped<CreateRoastProfileCommandFromResourceAssembler>();
 
 var app = builder.Build();
 
