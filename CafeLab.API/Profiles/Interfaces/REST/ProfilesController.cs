@@ -70,4 +70,39 @@ public class ProfilesController(IProfileCommandService profileCommandService, IP
         var profileResources = profiles.Select(ProfileResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(profileResources);
     }
+    
+    [HttpPut("{id:int}")]
+    [SwaggerOperation(
+        Summary = "Update Profile",
+        Description = "Update an existing profile by its ID.",
+        OperationId = "UpdateProfile"
+    )]
+    [SwaggerResponse(200, "The profile was updated successfully.", typeof(ProfileResource))]
+    [SwaggerResponse(400, "Invalid data sent to the API.")]
+    [SwaggerResponse(404, "No profile found for the given ID.")]
+    public async Task<IActionResult> UpdateProfile(int id, [FromBody] UpdateProfileResource resource)
+    {
+        if (resource == null)
+            return BadRequest(new { message = "El cuerpo de la solicitud no puede estar vacío." });
+        
+        if (string.IsNullOrWhiteSpace(resource.Name) || string.IsNullOrWhiteSpace(resource.Email))
+            return BadRequest(new { message = "Nombre y correo electrónico son obligatorios." });
+
+        try
+        {
+            var command = UpdateProfileCommandFromResourceAssembler.ToCommandFromResource(id, resource);
+            var profile = await profileCommandService.Handle(command);
+
+            if (profile == null)
+                return NotFound(new { message = $"No existe un perfil con el ID {id}." });
+
+            var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile);
+            return Ok(profileResource);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Ocurrió un error inesperado al actualizar el perfil.", details = ex.Message });
+        }
+    }
+
 }

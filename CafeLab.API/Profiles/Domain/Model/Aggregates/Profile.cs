@@ -64,4 +64,27 @@ public partial class Profile
         Plan = command.Plan;
         HasPlan = command.HasPlan;
     }
+    
+    public void Update(
+        string name,
+        string email,
+        string role,
+        string cafeteriaName,
+        string experience,
+        string profilePicture,
+        string paymentMethod,
+        string plan,
+        bool hasPlan
+    )
+    {
+        Name = name;
+        Email = new EmailAddress(email);
+        Role = role;
+        CafeteriaName = cafeteriaName;
+        Experience = experience;
+        ProfilePicture = profilePicture;
+        PaymentMethod = paymentMethod;
+        Plan = plan;
+        HasPlan = hasPlan;
+    }
 }

@@ -35,4 +35,26 @@ public class ProfileCommandService(
             return null;
         }
     }
+    
+    public async Task<Profile?> Handle(UpdateProfileCommand command)
+    {
+        var profile = await profileRepository.FindByIdAsync(command.Id);
+        if (profile == null)
+            return null;
+    
+        // Esto sirve para actualizar los campos necesarios del perfil
+        profile.Update(
+            command.Name,
+            command.Email,
+            command.Role,
+            command.CafeteriaName,
+            command.Experience,
+            command.ProfilePicture,
+            command.PaymentMethod,
+            command.Plan,
+            command.HasPlan
+        );
+        await unitOfWork.CompleteAsync();
+        return profile;
+    }
 }
