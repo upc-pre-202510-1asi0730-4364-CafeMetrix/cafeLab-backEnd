@@ -9,7 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76947095-7b74-4b43-9fd2-3ffeea5956f2" name="Changes" comment="" />
+    <list default="true" id="76947095-7b74-4b43-9fd2-3ffeea5956f2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CafeLab.API/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CafeLab.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CafeLab.API/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CafeLab.API/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/CafeLab.API/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CafeLab.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/CafeLab.API/appsettings.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,7 +56,7 @@
     &quot;Azure - Web App.Publish CafeLab.API to Azure.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/profiles&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/frontybackprofiles&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -75,6 +80,12 @@
       <option name="resourceGroupName" value="ReCaf" />
       <option name="subscriptionId" value="bec98365-5252-46e2-8c4b-539813b26779" />
       <option name="webAppName" value="app-250702174440" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Publish CafeLab.API to Azure (11)" type="AzureWebAppDeploy">
+      <option name="projectConfiguration" value="Release" />
+      <option name="projectPlatform" value="Any CPU" />
+      <option name="publishableProjectPath" value="$PROJECT_DIR$/CafeLab.API/CafeLab.API.csproj" />
       <method v="2" />
     </configuration>
     <configuration name="Publish CafeLab.API to Azure (1)" type="AzureWebAppDeploy">
@@ -286,6 +297,8 @@
       <workItem from="1750721581236" duration="554000" />
       <workItem from="1750778743266" duration="25384000" />
       <workItem from="1751489770185" duration="8641000" />
+      <workItem from="1751740557236" duration="699000" />
+      <workItem from="1751741644372" duration="7417000" />
     </task>
     <servers />
   </component>
@@ -296,5 +309,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
