@@ -10,6 +10,11 @@ using CafeLab.API.CoffeeProduction.Application.Internal.QueryServices;
 using CafeLab.API.CoffeeProduction.Domain.Repositories;
 using CafeLab.API.CoffeeProduction.Infrastructure.Persistance.EFC.Repositories;
 using CafeLab.API.CoffeeProduction.Interfaces.REST.Transform;
+using CafeLab.API.Preparation.Domain.Services;
+using CafeLab.API.Preparation.Application.Internal.CommandServices;
+using CafeLab.API.Preparation.Application.Internal.QueryServices;
+using CafeLab.API.Preparation.Domain.Repositories;
+using CafeLab.API.Preparation.Infrastructure.Persistence.EFC.Repositories;
 
 //builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 using CafeLab.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
@@ -107,6 +112,26 @@ builder.Services.AddScoped<IRoastProfileQueryService, RoastProfileQueryService>(
 builder.Services.AddScoped<IRoastProfileRepository, RoastProfileRepository>();
 builder.Services.AddScoped<RoastProfileResourceFromEntityAssembler>();
 builder.Services.AddScoped<CreateRoastProfileCommandFromResourceAssembler>();
+
+// Preparation Bounded Context
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<IRecipeCommandService>(provider =>
+{
+    var recipeRepository = provider.GetRequiredService<IRecipeRepository>();
+    var portfolioRepository = provider.GetRequiredService<IPortfolioRepository>();
+    var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+    return new RecipeCommandService(recipeRepository, portfolioRepository, unitOfWork);
+});
+builder.Services.AddScoped<IRecipeQueryService, RecipeQueryService>();
+builder.Services.AddScoped<IPortfolioCommandService>(provider =>
+{
+    var portfolioRepository = provider.GetRequiredService<IPortfolioRepository>();
+    var recipeRepository = provider.GetRequiredService<IRecipeRepository>();
+    var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+    return new PortfolioCommandService(portfolioRepository, recipeRepository, unitOfWork);
+});
+builder.Services.AddScoped<IPortfolioQueryService, PortfolioQueryService>();
 
 var app = builder.Build();
 
