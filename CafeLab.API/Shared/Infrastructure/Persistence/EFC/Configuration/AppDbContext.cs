@@ -1,11 +1,16 @@
 //aqui se llaman aggregates y entities :p
 using CafeLab.API.Profiles.Domain.Model.Aggregates;
 using CafeLab.API.CoffeeProduction.Domain.Model.Aggregates;
+using CafeLab.API.Preparation.Domain.Model.Aggregates;
+using CafeLab.API.Preparation.Domain.Model.ValueObjects;
 
+using CafeLab.API.Sensory_evaluation.Domain.Model.Aggregates;
+using CafeLab.API.Administration.Domain.Model.Aggregates;
 //ESTO ES OBLIGATORIO -------------------------------------------------------------
 using CafeLab.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CafeLab.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 //---------------------------------------------------------------------------------
@@ -118,11 +123,77 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .WithMany()
             .HasForeignKey(rp => rp.CoffeeLotId)
             .OnDelete(DeleteBehavior.Restrict);
+         builder.Entity<Portfolio>().HasKey(p => p.Id);
+        builder.Entity<Portfolio>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Portfolio>().Property(p => p.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<Portfolio>().Property(p => p.CreatedAt).IsRequired();
+        builder.Entity<Portfolio>().Property(p => p.UserId).IsRequired();
+
+        // Preparation Context - Recipe
+        builder.Entity<Recipe>().HasKey(r => r.Id);
+        builder.Entity<Recipe>().Property(r => r.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Recipe>().Property(r => r.UserId).IsRequired();
+        builder.Entity<Recipe>().Property(r => r.Name).IsRequired().HasMaxLength(200);
+        builder.Entity<Recipe>().Property(r => r.ImageUrl).HasColumnType("TEXT");
+        builder.Entity<Recipe>().Property(r => r.ExtractionMethod).IsRequired();
+        builder.Entity<Recipe>().Property(r => r.Ratio)
+            .HasMaxLength(10)
+            .HasConversion(
+                v => v.Value,
+                v => new Ratio(v));
+        builder.Entity<Recipe>().Property(r => r.CuppingSessionId);
+        builder.Entity<Recipe>().Property(r => r.PortfolioId);
+        builder.Entity<Recipe>().Property(r => r.PreparationTime).IsRequired();
+        builder.Entity<Recipe>().Property(r => r.Steps).HasColumnType("TEXT");
+        builder.Entity<Recipe>().Property(r => r.Tips).HasColumnType("TEXT");
+        builder.Entity<Recipe>().Property(r => r.Cupping).HasMaxLength(200);
+        builder.Entity<Recipe>().Property(r => r.GrindSize)
+            .HasMaxLength(20)
+            .HasConversion(
+                v => v.Value,
+                v => new GrindSize(v));
+        builder.Entity<Recipe>().Property(r => r.CreatedAt).IsRequired();
+
+        // Preparation Context - Ingredient
+        builder.Entity<Ingredient>().HasKey(i => i.Id);
+        builder.Entity<Ingredient>().Property(i => i.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Ingredient>().Property(i => i.RecipeId).IsRequired();
+        builder.Entity<Ingredient>().Property(i => i.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<Ingredient>().Property(i => i.Amount).IsRequired().HasPrecision(10, 2);
+        builder.Entity<Ingredient>().Property(i => i.Unit)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasConversion(
+                v => v.Value,
+                v => new Unit(v));
+
+        // Relationships for Preparation Context
+        builder.Entity<Recipe>()
+            .HasMany(r => r.Ingredients)
+            .WithOne(i => i.Recipe)
+            .HasForeignKey(i => i.RecipeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
         builder.UseSnakeCaseNamingConvention();
+        
+        builder.Entity<CafeLab.API.Sensory_evaluation.Domain.Model.Aggregates.CuppingSession>(entity =>
+        {
+            entity.OwnsOne(e => e.Ratings);
+        });
     }
 
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<CoffeeLot> CoffeeLots { get; set; }
     public DbSet<RoastProfile> RoastProfiles { get; set; }
+    
+    public DbSet<Portfolio> Portfolios { get; set; }
+    public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<Ingredient> Ingredients { get; set; }
+    
+    
+    public DbSet<CuppingSession> CuppingSessions { get; set; }
+    public DbSet<BaristaCuppingSession> BaristaCuppingSessions { get; set; }
+    public DbSet<MovimientoInventario> MovimientosInventario { get; set; }
+    public DbSet<CostoLote> CostosLote { get; set; }
 }
