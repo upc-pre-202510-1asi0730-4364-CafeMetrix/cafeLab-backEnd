@@ -11,10 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="76947095-7b74-4b43-9fd2-3ffeea5956f2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CafeLab.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CafeLab.API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CafeLab.API/Profiles/Application/Internal/CommandServices/ProfileCommandService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CafeLab.API/Profiles/Application/Internal/CommandServices/ProfileCommandService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CafeLab.API/Profiles/Domain/Model/Aggregates/Profile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CafeLab.API/Profiles/Domain/Model/Aggregates/Profile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CafeLab.API/Profiles/Domain/Services/IProfileCommandService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CafeLab.API/Profiles/Domain/Services/IProfileCommandService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CafeLab.API/Profiles/Interfaces/REST/ProfilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CafeLab.API/Profiles/Interfaces/REST/ProfilesController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -299,7 +295,7 @@
       <workItem from="1750778743266" duration="25384000" />
       <workItem from="1751489770185" duration="8641000" />
       <workItem from="1751740557236" duration="699000" />
-      <workItem from="1751741644372" duration="9206000" />
+      <workItem from="1751741644372" duration="17276000" />
     </task>
     <servers />
   </component>
