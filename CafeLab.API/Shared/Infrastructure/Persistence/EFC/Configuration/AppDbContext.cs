@@ -1,6 +1,8 @@
 //aqui se llaman aggregates y entities :p
 using CafeLab.API.Profiles.Domain.Model.Aggregates;
 using CafeLab.API.CoffeeProduction.Domain.Model.Aggregates;
+using CafeLab.API.Sensory_evaluation.Domain.Model.Aggregates;
+using CafeLab.API.Administration.Domain.Model.Aggregates;
 
 //ESTO ES OBLIGATORIO -------------------------------------------------------------
 using CafeLab.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
@@ -120,9 +122,18 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.UseSnakeCaseNamingConvention();
+
+        builder.Entity<CafeLab.API.Sensory_evaluation.Domain.Model.Aggregates.CuppingSession>(entity =>
+        {
+            entity.OwnsOne(e => e.Ratings);
+        });
     }
 
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<CoffeeLot> CoffeeLots { get; set; }
     public DbSet<RoastProfile> RoastProfiles { get; set; }
+    public DbSet<CuppingSession> CuppingSessions { get; set; }
+    public DbSet<BaristaCuppingSession> BaristaCuppingSessions { get; set; }
+    public DbSet<MovimientoInventario> MovimientosInventario { get; set; }
+    public DbSet<CostoLote> CostosLote { get; set; }
 }
